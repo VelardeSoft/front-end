@@ -1,0 +1,61 @@
+-- Create the database
+CREATE DATABASE IF NOT EXISTS ReservationSystem;
+USE ReservationSystem;
+
+-- Create subscriptions table
+CREATE TABLE subscriptions (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    plan ENUM('Basic', 'Standard', 'Premium') NOT NULL, -- Basic = 99.90, Standard = 199.90, Premium = 399.90  Soles
+    cant_rooms INT NOT NULL,  -- Max rooms for each plan
+    duration_months INT NOT NULL  -- Duration in months
+);
+
+-- Create users table (owners and visitors)
+CREATE TABLE users (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(55) NOT NULL,
+    email VARCHAR(50) NOT NULL UNIQUE,
+    password VARCHAR(80) NOT NULL,
+    user_type ENUM('Owner', 'Visitor') NOT NULL,
+    phone VARCHAR(9),
+    address VARCHAR(65),
+    subscription_id INT,  -- Column for the user's active subscription
+    FOREIGN KEY (subscription_id) REFERENCES Subscriptions(id) ON DELETE SET NULL
+);
+
+-- Create hotels table and its relationship with the active subscription
+CREATE TABLE hotels (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(55) NOT NULL,
+    address VARCHAR(45) NOT NULL,
+    phone VARCHAR(9),
+    email VARCHAR(50),
+    owner_id INT,  -- Relationship with Users table (owner)
+    subscription_id INT,  -- Relationship with Subscriptions table
+    FOREIGN KEY (owner_id) REFERENCES Users(id) ON DELETE CASCADE,
+    FOREIGN KEY (subscription_id) REFERENCES Subscriptions(id) ON DELETE SET NULL
+);
+
+-- Create rooms table
+CREATE TABLE rooms (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    hotel_id INT,  -- Relationship with Hotels
+    room_number VARCHAR(50) NOT NULL,
+    typeroom VARCHAR(100),  -- Example: 'Single', 'Double', 'Suite'
+    capacity INT,
+    price DECIMAL(10, 2),
+    status ENUM('Available', 'Occupied', 'Maintenance') DEFAULT 'Available',
+    FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE
+);
+
+-- Create reservations table
+CREATE TABLE reservations (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    room_id INT,  -- Relationship with Rooms
+    user_id INT,  -- Relationship with Users (visitor)
+    start_date DATE NOT NULL,
+    end_date DATE NOT NULL,
+    status ENUM('Confirmed', 'Cancelled', 'Pending') DEFAULT 'Pending',
+    FOREIGN KEY (room_id) REFERENCES Rooms(id) ON DELETE CASCADE,
+    FOREIGN KEY (user_id) REFERENCES Users(id) ON DELETE CASCADE
+);

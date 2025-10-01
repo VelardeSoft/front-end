@@ -1,0 +1,173 @@
+{
+  "subscriptions": [
+    {
+      "id": "1",
+      "plan": "Basic",
+      "cant_rooms": 5,
+      "duration_months": 3,
+      "price": 99.9,
+      "features": [
+        "Hasta 5 habitaciones",
+        "3 meses de servicio",
+        "Soporte por correo electrónico"
+      ]
+    },
+    {
+      "id": "2",
+      "plan": "Standard",
+      "cant_rooms": 15,
+      "duration_months": 6,
+      "price": 199.9,
+      "features": [
+        "Hasta 15 habitaciones",
+        "6 meses de servicio",
+        "Soporte prioritario",
+        "Estadísticas básicas"
+      ]
+    },
+    {
+      "id": "3",
+      "plan": "Premium",
+      "cant_rooms": 50,
+      "duration_months": 12,
+      "price": 399.9,
+      "features": [
+        "Habitaciones ilimitadas",
+        "12 meses de servicio",
+        "Soporte 24/7",
+        "Estadísticas avanzadas",
+        "Marketing integrado"
+      ]
+    },
+    {
+      "id": "4",
+      "userId": 2,
+      "plan": "Premium",
+      "cant_rooms": 50,
+      "duration_months": 12,
+      "startDate": "2025-01-01T00:00:00.000Z",
+      "endDate": "2026-01-01T00:00:00.000Z",
+      "status": "active",
+      "price": 399.9
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "name": "Admin System",
+      "email": "admin@hostelmanager.com",
+      "password": "admin123",
+      "user_type": "Owner",
+      "phone": "999888777",
+      "address": "Av. Principal 123, Lima",
+      "subscription_id": 1
+    },
+    {
+      "id": "2",
+      "name": "Juan Pérez Gonzales",
+      "email": "owner@test.com",
+      "user_type": "Owner",
+      "phone": "987654321",
+      "address": "Calle Los Pinos 456, Lima",
+      "subscription_id": 4
+    },
+    {
+      "id": "3",
+      "name": "María García",
+      "email": "guest@test.com",
+      "password": "guest123",
+      "user_type": "Visitor",
+      "phone": "912345678",
+      "address": "Av. Las Flores 789, Lima",
+      "subscription_id": null
+    }
+  ],
+  "hotels": [
+    {
+      "id": "1",
+      "name": "Hotel Lima Plaza",
+      "address": "Av. Arequipa 123, Lima",
+      "phone": "987654321",
+      "email": "info@limaplaza.com",
+      "owner_id": 2,
+      "subscription_id": 4,
+      "description": "Hotel de lujo ubicado en el centro de Lima con vistas panorámicas",
+      "amenities": [
+        "WiFi",
+        "Piscina",
+        "Restaurante",
+        "Spa",
+        "Gimnasio"
+      ],
+      "image": "https://placehold.co/600x400?text=Hotel+Lima+Plaza"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "1",
+      "hotel_id": 1,
+      "room_number": "101",
+      "typeroom": "Single",
+      "capacity": 1,
+      "price": 89.9,
+      "status": "Available",
+      "amenities": [
+        "WiFi",
+        "Baño privado",
+        "TV",
+        "Aire acondicionado"
+      ],
+      "description": "Habitación individual con todas las comodidades",
+      "image": "https://placehold.co/600x400?text=Room+101"
+    },
+    {
+      "id": "2",
+      "hotel_id": 1,
+      "room_number": "102",
+      "typeroom": "Double",
+      "capacity": 2,
+      "price": 129.9,
+      "status": "Available",
+      "amenities": [
+        "WiFi",
+        "Baño privado",
+        "TV",
+        "Aire acondicionado",
+        "Minibar"
+      ],
+      "description": "Habitación doble con vistas a la ciudad",
+      "image": "https://placehold.co/600x400?text=Room+102"
+    },
+    {
+      "id": "3",
+      "hotel_id": 1,
+      "room_number": "201",
+      "typeroom": "Suite",
+      "capacity": 4,
+      "price": 219.9,
+      "status": "Occupied",
+      "amenities": [
+        "WiFi",
+        "Baño privado",
+        "TV",
+        "Aire acondicionado",
+        "Minibar",
+        "Jacuzzi"
+      ],
+      "description": "Suite de lujo con dos habitaciones y sala de estar",
+      "image": "https://placehold.co/600x400?text=Suite+201"
+    }
+  ],
+  "reservations": [
+    {
+      "id": "1",
+      "room_id": 3,
+      "user_id": 3,
+      "start_date": "2025-09-15",
+      "end_date": "2025-09-20",
+      "status": "Confirmed",
+      "total_price": 1099.5,
+      "created_at": "2025-09-01T00:00:00.000Z"
+    }
+  ]
+}
