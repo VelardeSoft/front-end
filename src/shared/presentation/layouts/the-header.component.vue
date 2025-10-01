@@ -2,8 +2,10 @@
   <header class="header">
     <div class="header-container">
       <div class="logo-container">
+        <img width="317" height="51" alt="Issue image" src="https://github.com/user-attachments/assets/03eea7f6-3366-4ac6-af4d-7f01b364db8b" />
+        <!--
         <i class="pi pi-building logo-icon"></i>
-        <h1>{{ $t('header.title') }}</h1>
+        <h1>{{ $t('header.title') }}</h1> -->
       </div>
       <div class="header-actions">
         <div class="language-selector">

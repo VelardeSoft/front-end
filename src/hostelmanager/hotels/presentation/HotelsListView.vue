@@ -76,11 +76,12 @@
               <template #body="slotProps">
                 <div class="flex justify-content-center gap-2">
                   <Button
-                    icon="pi pi-eye"
-                    class="p-button-rounded p-button-info p-button-sm"
-                    @click="viewHotel(slotProps.data.id)"
-                    v-tooltip.top="$t('hotels.view')"
+                      icon="pi pi-eye"
+                      class="p-button-rounded p-button-info p-button-sm"
+                      @click="viewHotel(slotProps.data.id)"
+                      v-tooltip.top="$t('hotels.view')"
                   />
+                  <!--
                   <Button
                     v-if="isOwner && isOwnerOfHotel(slotProps.data)"
                     icon="pi pi-key"
@@ -94,7 +95,7 @@
                     class="p-button-rounded p-button-warning p-button-sm"
                     @click="editHotel(slotProps.data.id)"
                     v-tooltip.top="$t('hotels.editBtn')"
-                  />
+                  /> -->
                   <Button
                     v-if="isOwner && isOwnerOfHotel(slotProps.data)"
                     icon="pi pi-trash"

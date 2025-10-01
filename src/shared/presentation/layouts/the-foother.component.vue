@@ -4,6 +4,8 @@
       <div class="footer-content">
         <div class="footer-logo">
           <i class="pi pi-building"></i>
+          <!--<img width="317" height="51" alt="Image" src="https://github.com/user-attachments/assets/03eea7f6-3366-4ac6-af4d-7f01b364db8b" />-->
+
           <span>HostelManager</span>
         </div>
         <p class="copyright">{{ $t('footer.copyright') }}</p>
