@@ -37,7 +37,6 @@ app.use(PrimeVue, {
 
 // Registrar componentes globalmente
 app.component('Button', Button);
-app.component('pv-button', Button); // Mantener compatibilidad con código existente
 app.component('InputText', InputText);
 app.component('Password', Password);
 app.component('Toast', Toast);

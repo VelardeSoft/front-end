@@ -10,9 +10,9 @@
               id="name"
               v-model="userData.name"
               :placeholder="$t('auth.name')"
-              :class="{'p-invalid': v$.name.$invalid && submitted}"
+              :class="{'p-invalid': v$.userData.name.$invalid && submitted}"
             />
-            <small v-if="v$.name.$invalid && submitted" class="p-error">
+            <small v-if="v$.userData.name.$invalid && submitted" class="p-error">
               {{ $t('common.required') }}
             </small>
           </div>
@@ -24,9 +24,9 @@
               v-model="userData.email"
               type="email"
               :placeholder="$t('auth.email')"
-              :class="{'p-invalid': v$.email.$invalid && submitted}"
+              :class="{'p-invalid': v$.userData.email.$invalid && submitted}"
             />
-            <small v-if="v$.email.$invalid && submitted" class="p-error">
+            <small v-if="v$.userData.email.$invalid && submitted" class="p-error">
               {{ $t('common.required') }}
             </small>
           </div>
@@ -38,9 +38,9 @@
               v-model="userData.password"
               :placeholder="$t('auth.password')"
               toggleMask
-              :class="{'p-invalid': v$.password.$invalid && submitted}"
+              :class="{'p-invalid': v$.userData.password.$invalid && submitted}"
             />
-            <small v-if="v$.password.$invalid && submitted" class="p-error">
+            <small v-if="v$.userData.password.$invalid && submitted" class="p-error">
               {{ $t('common.required') }}
             </small>
           </div>
@@ -69,9 +69,9 @@
               optionLabel="name"
               optionValue="value"
               :placeholder="$t('auth.userType')"
-              :class="{'p-invalid': v$.user_type.$invalid && submitted}"
+              :class="{'p-invalid': v$.userData.user_type.$invalid && submitted}"
             />
-            <small v-if="v$.user_type.$invalid && submitted" class="p-error">
+            <small v-if="v$.userData.user_type.$invalid && submitted" class="p-error">
               {{ $t('common.required') }}
             </small>
           </div>
@@ -122,7 +122,7 @@ import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'primevue/usetoast';
 import { useVuelidate } from '@vuelidate/core';
-import { required, email, sameAs } from '@vuelidate/validators';
+import { required, email } from '@vuelidate/validators';
 import { UserRepository } from '../infrastructure/UserRepository';
 
 // Composables
@@ -149,18 +149,24 @@ const userTypes = [
   { name: t('auth.visitor'), value: 'Visitor' }
 ];
 
-// Validaciones
-const passwordsMatch = computed(() => userData.password === confirmPassword.value);
+// Validación personalizada para verificar que las contraseñas coincidan
+const sameAsPassword = (value) => value === userData.password;
 
+// Validaciones
 const rules = {
-  name: { required },
-  email: { required, email },
-  password: { required },
-  confirmPassword: { required, sameAs: sameAs(userData.password) },
-  user_type: { required }
+  userData: {
+    name: { required },
+    email: { required, email },
+    password: { required },
+    user_type: { required }
+  },
+  confirmPassword: {
+    required,
+    sameAsPassword
+  }
 };
 
-const v$ = useVuelidate(rules, { ...userData, confirmPassword });
+const v$ = useVuelidate(rules, { userData, confirmPassword });
 
 // Métodos
 const register = async () => {
@@ -168,10 +174,32 @@ const register = async () => {
 
   const isValid = await v$.value.$validate();
   if (!isValid) {
+    // Identificar los campos con error para mostrar mensaje más específico
+    const fieldErrors = [];
+
+    if (v$.value.userData.name.$invalid) fieldErrors.push('name');
+    if (v$.value.userData.email.$invalid) fieldErrors.push('email');
+    if (v$.value.userData.password.$invalid) fieldErrors.push('password');
+    if (v$.value.userData.user_type.$invalid) fieldErrors.push('user type');
+    if (v$.value.confirmPassword.$invalid && confirmPassword.value !== userData.password) {
+      fieldErrors.push('password confirmation doesn\'t match');
+    } else if (v$.value.confirmPassword.$invalid) {
+      fieldErrors.push('password confirmation');
+    }
+
+    toast.add({
+      severity: 'error',
+      summary: t('common.error'),
+      detail: `Please complete these fields: ${fieldErrors.join(', ')}`,
+      life: 5000
+    });
+
+    console.log('Validation errors:', v$.value.$errors);
     return;
   }
 
   loading.value = true;
+  console.log('Registering with data:', userData);
 
   try {
     // Crear nuevo usuario
@@ -200,12 +228,7 @@ const register = async () => {
       // Redirigir al dashboard
       router.push('/dashboard');
     } else {
-      toast.add({
-        severity: 'error',
-        summary: t('common.error'),
-        detail: t('auth.registerError'),
-        life: 3000
-      });
+      throw new Error('Failed to register user');
     }
   } catch (error) {
     console.error('Register error:', error);
@@ -226,19 +249,29 @@ const register = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 140px);
+  min-height: 100vh;
   padding: 2rem;
+  background-color: #f5f7f9;
+  color: #555555;
 }
 
 .register-card {
   width: 100%;
   max-width: 550px;
-  padding: 2rem;
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1) !important;
+  background-color: white;
 }
 
 @media (max-width: 480px) {
   .register-card {
     padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .register-container {
+    padding: 0;
   }
 }
 </style>

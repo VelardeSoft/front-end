@@ -3,9 +3,9 @@
     {
       "id": "1",
       "plan": "Basic",
-      "cant_rooms": 5,
-      "duration_months": 3,
-      "price": 99.9,
+      "cant_rooms": "5",
+      "duration_months": "3",
+      "price": "99.9",
       "features": [
         "Hasta 5 habitaciones",
         "3 meses de servicio",
@@ -15,9 +15,9 @@
     {
       "id": "2",
       "plan": "Standard",
-      "cant_rooms": 15,
-      "duration_months": 6,
-      "price": 199.9,
+      "cant_rooms": "15",
+      "duration_months": "6",
+      "price": "199.9",
       "features": [
         "Hasta 15 habitaciones",
         "6 meses de servicio",
@@ -28,9 +28,9 @@
     {
       "id": "3",
       "plan": "Premium",
-      "cant_rooms": 50,
-      "duration_months": 12,
-      "price": 399.9,
+      "cant_rooms": "50",
+      "duration_months": "12",
+      "price": "399.9",
       "features": [
         "Habitaciones ilimitadas",
         "12 meses de servicio",
@@ -38,48 +38,30 @@
         "Estadísticas avanzadas",
         "Marketing integrado"
       ]
-    },
-    {
-      "id": "4",
-      "userId": 2,
-      "plan": "Premium",
-      "cant_rooms": 50,
-      "duration_months": 12,
-      "startDate": "2025-01-01T00:00:00.000Z",
-      "endDate": "2026-01-01T00:00:00.000Z",
-      "status": "active",
-      "price": 399.9
     }
   ],
   "users": [
     {
-      "id": "1",
-      "name": "Admin System",
-      "email": "admin@hostelmanager.com",
-      "password": "admin123",
+      "id": "3b68",
+      "name": "Néstor Velarde Gonzales",
+      "email": "velarde@gmail.com",
+      "password": ".Net221@",
       "user_type": "Owner",
-      "phone": "999888777",
-      "address": "Av. Principal 123, Lima",
-      "subscription_id": 1
+      "phone": "926335924",
+      "address": "Av. Metropolitana, Lima",
+      "subscription_id": "2",
+      "createdAt": "2025-10-01T19:40:17.672Z"
     },
     {
-      "id": "2",
-      "name": "Juan Pérez Gonzales",
-      "email": "owner@test.com",
-      "user_type": "Owner",
-      "phone": "987654321",
-      "address": "Calle Los Pinos 456, Lima",
-      "subscription_id": 4
-    },
-    {
-      "id": "3",
-      "name": "María García",
-      "email": "guest@test.com",
-      "password": "guest123",
+      "id": "e053",
+      "name": "Teresita",
+      "email": "tere@gmail.com",
+      "password": ".Tere221@",
       "user_type": "Visitor",
-      "phone": "912345678",
-      "address": "Av. Las Flores 789, Lima",
-      "subscription_id": null
+      "phone": "926335924",
+      "address": "Av. Metropolitana, Lima",
+      "subscription_id": null,
+      "createdAt": "2025-10-01T19:49:20.414Z"
     }
   ],
   "hotels": [
@@ -89,8 +71,8 @@
       "address": "Av. Arequipa 123, Lima",
       "phone": "987654321",
       "email": "info@limaplaza.com",
-      "owner_id": 2,
-      "subscription_id": 4,
+      "owner_id": "2",
+      "subscription_id": "4",
       "description": "Hotel de lujo ubicado en el centro de Lima con vistas panorámicas",
       "amenities": [
         "WiFi",
@@ -102,28 +84,48 @@
       "image": "https://placehold.co/600x400?text=Hotel+Lima+Plaza"
     },
     {
-      "id": "4df2",
-      "name": "Teresita",
-      "email": "u20211c221@gmail.com",
-      "address": "Alamadena",
-      "phone": "987654321",
-      "description": "Es muy bonita",
+      "id": "3f85",
+      "name": "Hotels dddd",
+      "email": "codydevops@gmail.com",
+      "address": "Los Olivos",
+      "phone": "926335924",
+      "description": "Es un Hotel Boniot",
       "image": "https://placehold.co/600x400?text=Hotel+Image",
-      "amenities": [],
-      "owner_id": "2",
-      "subscription_id": 4,
-      "createdAt": "2025-10-01T18:58:53.719Z",
-      "updatedAt": "2025-10-01T18:58:53.719Z"
+      "amenities": [
+        "wifi",
+        "cama ancha"
+      ],
+      "owner_id": "3b68",
+      "subscription_id": "1",
+      "createdAt": "2025-10-01T19:45:32.938Z",
+      "updatedAt": "2025-10-01T19:45:32.938Z"
+    },
+    {
+      "id": "83d9",
+      "name": "Maria",
+      "email": "u20211c221@gmail.com",
+      "address": "Av. Metropolitana, Lima",
+      "phone": "926335924",
+      "description": "ded",
+      "image": "https://placehold.co/600x400?text=Hotel+Image",
+      "amenities": [
+        "er",
+        "ee"
+      ],
+      "owner_id": "3b68",
+      "subscription_id": "1",
+      "createdAt": "2025-10-01T19:48:35.678Z",
+      "updatedAt": "2025-10-01T19:48:35.678Z"
     }
   ],
   "rooms": [
     {
       "id": "1",
-      "hotel_id": 1,
+      "hotel_id": "1",
       "room_number": "101",
       "typeroom": "Single",
-      "capacity": 1,
-      "price": 89.9,
+      "capacity": "1",
+      "price": "89.9",
       "status": "Available",
       "amenities": [
         "WiFi",
@@ -136,11 +138,11 @@
     },
     {
       "id": "2",
-      "hotel_id": 1,
+      "hotel_id": "1",
       "room_number": "102",
       "typeroom": "Double",
-      "capacity": 2,
-      "price": 129.9,
+      "capacity": "2",
+      "price": "129.9",
       "status": "Available",
       "amenities": [
         "WiFi",
@@ -154,11 +156,11 @@
     },
     {
       "id": "3",
-      "hotel_id": 1,
+      "hotel_id": "1",
       "room_number": "201",
       "typeroom": "Suite",
-      "capacity": 4,
-      "price": 219.9,
+      "capacity": "4",
+      "price": "219.9",
       "status": "Occupied",
       "amenities": [
         "WiFi",
@@ -175,12 +177,12 @@
   "reservations": [
     {
       "id": "1",
-      "room_id": 3,
-      "user_id": 3,
+      "room_id": "3",
+      "user_id": "3",
       "start_date": "2025-09-15",
       "end_date": "2025-09-20",
       "status": "Confirmed",
-      "total_price": 1099.5,
+      "total_price": "1099.5",
       "created_at": "2025-09-01T00:00:00.000Z"
     }
   ]

@@ -5,7 +5,7 @@
       <form @submit.prevent="login">
         <div class="p-fluid">
           <div class="field">
-            <label for="email">{{ $t('auth.email') }}</label>
+            <label for="email">{{ $t('auth.email') }}</label> <br/>
             <InputText
               id="email"
               v-model="email"
@@ -19,7 +19,7 @@
           </div>
 
           <div class="field">
-            <label for="password">{{ $t('auth.password') }}</label>
+            <label for="password">{{ $t('auth.password') }}</label> <br/>
             <Password
               id="password"
               v-model="password"
@@ -134,19 +134,30 @@ const login = async () => {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-height: calc(100vh - 140px);
+  min-height: 90vh;
   padding: 2rem;
+  background-color: #f5f7f9;
+  text-align: center;
+  color: #555555;
 }
 
 .login-card {
   width: 100%;
   max-width: 450px;
-  padding: 2rem;
+  padding: 2.5rem;
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1) !important;
+  background-color: white;
 }
 
 @media (max-width: 480px) {
   .login-card {
     padding: 1.5rem;
+    margin: 1rem;
+  }
+
+  .login-container {
+    padding: 0;
   }
 }
 </style>
