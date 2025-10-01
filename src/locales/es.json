@@ -1,0 +1,21 @@
+{
+  "header": {
+    "title": "Administrador de Hostales"
+  },
+  "sidebar": {
+    "home": "Inicio",
+    "hotels": "Hoteles",
+    "rooms": "Habitaciones",
+    "reservations": "Reservaciones",
+    "profiles": "Perfiles",
+    "subscriptions": "Suscripciones",
+    "settings": "Configuración"
+  },
+  "footer": {
+    "copyright": "© 2025 - Desarrollado por el equipo de HostelManagers"
+  },
+  "welcome": {
+    "message": "Bienvenido a nuestra plataforma de administración de hostales"
+  }
+}
+

@@ -6,6 +6,7 @@ import Aura from '@primeuix/themes/aura';
 import 'primeicons/primeicons.css'
 import pinia from "./pinia.js";
 import 'primeflex/primeflex.css';
+import i18n from './i18n.js';
 
 import Button from 'primevue/button';
 
@@ -19,5 +20,5 @@ app.use(PrimeVue, {
 app.component('pv-button', Button);
 
 app.use(pinia);
+app.use(i18n);
 app.mount('#app')
-

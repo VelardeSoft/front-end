@@ -1,0 +1,21 @@
+{
+  "header": {
+    "title": "Hostel Manager"
+  },
+  "sidebar": {
+    "home": "Home",
+    "hotels": "Hotels",
+    "rooms": "Rooms",
+    "reservations": "Reservations",
+    "profiles": "Profiles",
+    "subscriptions": "Subscriptions",
+    "settings": "Settings"
+  },
+  "footer": {
+    "copyright": "© 2025 - Developed by HostelManagers team"
+  },
+  "welcome": {
+    "message": "Welcome to our hostel management platform"
+  }
+}
+
