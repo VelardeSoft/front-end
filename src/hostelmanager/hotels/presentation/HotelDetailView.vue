@@ -18,6 +18,13 @@
               class="p-button-warning"
               @click="editHotel"
             />
+            <Button
+              v-if="isOwner && isOwnerOfHotel && hasSubscription"
+              icon="pi pi-plus"
+              :label="$t('rooms.create')"
+              class="p-button-success"
+              @click="createRoom"
+            />
           </div>
         </div>
 
@@ -40,7 +47,7 @@
           <!-- Información del Hotel -->
           <div class="col-12 lg:col-5">
             <div class="mb-4">
-              <img :src="hotel.image" :alt="hotel.name" class="w-full hotel-image"/>
+              <img :src="hotel.image" :alt="hotel.name" class="w-full hotel-image" />
             </div>
             <div class="flex flex-column gap-3">
               <div class="flex justify-content-between align-items-center">
@@ -66,6 +73,21 @@
                 <span>{{ hotel.email }}</span>
               </div>
             </div>
+
+            <!-- Mensaje para Owner sin suscripción -->
+            <div v-if="isOwner && isOwnerOfHotel && !hasSubscription" class="mt-4">
+              <Message severity="warn" :closable="false">
+                <div>
+                  <i class="pi pi-exclamation-triangle mr-2"></i>
+                  <span>{{ $t('subscriptions.required') }}</span>
+                  <Button
+                    :label="$t('subscriptions.subscribe')"
+                    class="p-button-sm p-button-text ml-3"
+                    @click="goToSubscriptions"
+                  />
+                </div>
+              </Message>
+            </div>
           </div>
 
           <div class="col-12 lg:col-7">
@@ -83,40 +105,155 @@
 
             <!-- Habitaciones disponibles -->
             <div class="mt-4">
-              <h3>{{ $t('rooms.list') }}</h3>
-              <DataTable :value="availableRooms" stripedRows :rows="5" :paginator="true" class="mt-2">
-                <Column field="room_number" :header="$t('rooms.roomNumber')" sortable></Column>
-                <Column field="typeroom" :header="$t('rooms.type')" sortable>
-                  <template #body="slotProps">
-                    {{ $t(`rooms.types.${slotProps.data.typeroom.toLowerCase()}`) }}
-                  </template>
-                </Column>
-                <Column field="capacity" :header="$t('rooms.capacity')" sortable></Column>
-                <Column field="price" :header="$t('rooms.price')" sortable>
-                  <template #body="slotProps">
-                    {{ formatPrice(slotProps.data.price) }}
-                  </template>
-                </Column>
-                <Column :header="$t('rooms.actions')" style="width: 120px">
-                  <template #body="slotProps">
-                    <div class="flex gap-1">
-                      <Button
-                        icon="pi pi-eye"
-                        class="p-button-rounded p-button-info p-button-sm"
-                        @click="viewRoom(slotProps.data.id)"
-                        v-tooltip.top="$t('rooms.view')"
-                      />
-                      <Button
-                        v-if="isVisitor && slotProps.data.status === 'Available'"
-                        icon="pi pi-calendar-plus"
-                        class="p-button-rounded p-button-success p-button-sm"
-                        @click="reserveRoom(slotProps.data.id)"
-                        v-tooltip.top="$t('rooms.reserve')"
-                      />
+              <div class="flex justify-content-between align-items-center mb-3">
+                <h3 class="m-0">{{ $t('rooms.list') }}</h3>
+                <Button
+                  v-if="isOwner && isOwnerOfHotel && hasSubscription"
+                  icon="pi pi-plus"
+                  :label="$t('rooms.create')"
+                  class="p-button-success p-button-sm"
+                  @click="createRoom"
+                />
+              </div>
+
+              <div v-if="loadingRooms" class="flex justify-content-center my-5">
+                <ProgressSpinner />
+              </div>
+              <div v-else-if="rooms.length === 0" class="text-center my-3 p-3 bg-gray-100 border-round">
+                <div class="mb-2">
+                  <i class="pi pi-info-circle" style="font-size: 1.5rem"></i>
+                </div>
+                <p>{{ $t('rooms.noRooms') }}</p>
+                <Button
+                  v-if="isOwner && isOwnerOfHotel && hasSubscription"
+                  :label="$t('rooms.create')"
+                  icon="pi pi-plus"
+                  class="p-button-success p-button-sm mt-2"
+                  @click="createRoom"
+                />
+              </div>
+              <div v-else>
+                <DataView :value="rooms" :layout="layout" :paginator="true" :rows="4">
+                  <template #header>
+                    <div class="flex justify-content-end">
+                      <DataViewLayoutOptions v-model="layout" />
                     </div>
                   </template>
-                </Column>
-              </DataTable>
+
+                  <template #grid="slotProps">
+                    <div class="col-12 sm:col-6 xl:col-4 p-2">
+                      <div class="p-card room-card">
+                        <div class="relative">
+                          <img :src="slotProps.data.image" :alt="slotProps.data.room_number" class="room-grid-image" />
+                          <Tag
+                            :value="$t(`rooms.${slotProps.data.status.toLowerCase()}`)"
+                            :severity="getStatusSeverity(slotProps.data.status)"
+                            class="absolute right-0 top-0 m-2"
+                          />
+                        </div>
+                        <div class="p-card-body">
+                          <div class="flex justify-content-between align-items-center mb-2">
+                            <div class="font-bold">{{ $t('rooms.roomNumber') }} {{ slotProps.data.room_number }}</div>
+                            <div>{{ $t(`rooms.types.${slotProps.data.typeroom.toLowerCase()}`) }}</div>
+                          </div>
+
+                          <div class="flex justify-content-between align-items-center mb-3">
+                            <div>
+                              <i class="pi pi-users mr-1"></i>
+                              <span>{{ slotProps.data.capacity }}</span>
+                            </div>
+                            <div class="text-lg font-bold">{{ formatPrice(slotProps.data.price) }}</div>
+                          </div>
+
+                          <div class="flex justify-content-between">
+                            <Button
+                              :label="$t('rooms.view')"
+                              icon="pi pi-eye"
+                              class="p-button-info p-button-sm"
+                              @click="viewRoom(slotProps.data.id)"
+                            />
+                            <div class="flex gap-1">
+                              <Button
+                                v-if="isVisitor && slotProps.data.status === 'Available'"
+                                icon="pi pi-calendar-plus"
+                                class="p-button-success p-button-sm"
+                                @click="reserveRoom(slotProps.data.id)"
+                                v-tooltip.top="$t('rooms.reserve')"
+                              />
+                              <Button
+                                v-if="isOwner && isOwnerOfHotel && hasSubscription"
+                                icon="pi pi-pencil"
+                                class="p-button-warning p-button-sm"
+                                @click="editRoom(slotProps.data.id)"
+                                v-tooltip.top="$t('rooms.editBtn')"
+                              />
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+
+                  <template #list="slotProps">
+                    <div class="col-12 p-2">
+                      <div class="flex p-card">
+                        <div class="relative">
+                          <img :src="slotProps.data.image" :alt="slotProps.data.room_number" class="room-list-image" />
+                          <Tag
+                            :value="$t(`rooms.${slotProps.data.status.toLowerCase()}`)"
+                            :severity="getStatusSeverity(slotProps.data.status)"
+                            class="absolute right-0 top-0 m-2"
+                          />
+                        </div>
+                        <div class="flex-1 flex flex-column p-4">
+                          <div class="flex justify-content-between">
+                            <div>
+                              <div class="font-bold text-xl mb-1">{{ $t('rooms.roomNumber') }} {{ slotProps.data.room_number }}</div>
+                              <div class="mb-2">
+                                {{ $t(`rooms.types.${slotProps.data.typeroom.toLowerCase()}`) }} -
+                                <span><i class="pi pi-users"></i> {{ slotProps.data.capacity }}</span>
+                              </div>
+                            </div>
+                            <div class="text-2xl font-bold">{{ formatPrice(slotProps.data.price) }}</div>
+                          </div>
+
+                          <div v-if="slotProps.data.description" class="my-2">{{ slotProps.data.description }}</div>
+
+                          <div v-if="slotProps.data.amenities && slotProps.data.amenities.length > 0" class="mb-3">
+                            <div class="text-sm font-bold mb-1">{{ $t('rooms.amenities') }}:</div>
+                            <div class="flex flex-wrap gap-1">
+                              <Chip v-for="(amenity, index) in slotProps.data.amenities" :key="index" :label="amenity" />
+                            </div>
+                          </div>
+
+                          <div class="flex justify-content-end gap-2 mt-auto">
+                            <Button
+                              :label="$t('rooms.view')"
+                              icon="pi pi-eye"
+                              class="p-button-info p-button-sm"
+                              @click="viewRoom(slotProps.data.id)"
+                            />
+                            <Button
+                              v-if="isVisitor && slotProps.data.status === 'Available'"
+                              :label="$t('rooms.reserve')"
+                              icon="pi pi-calendar-plus"
+                              class="p-button-success p-button-sm"
+                              @click="reserveRoom(slotProps.data.id)"
+                            />
+                            <Button
+                              v-if="isOwner && isOwnerOfHotel && hasSubscription"
+                              :label="$t('rooms.editBtn')"
+                              icon="pi pi-pencil"
+                              class="p-button-warning p-button-sm"
+                              @click="editRoom(slotProps.data.id)"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
+                </DataView>
+              </div>
             </div>
           </div>
         </div>
@@ -150,7 +287,9 @@ const user = ref(userRepository.getCurrentUser());
 const hotel = ref(null);
 const rooms = ref([]);
 const loading = ref(true);
+const loadingRooms = ref(true);
 const hotelId = computed(() => Number(route.params.id));
+const layout = ref('grid');
 
 // Propiedades computadas
 const isOwner = computed(() => user.value?.user_type === 'Owner');
@@ -158,10 +297,6 @@ const isVisitor = computed(() => user.value?.user_type === 'Visitor');
 const hasSubscription = computed(() => user.value?.subscription_id !== null);
 const isOwnerOfHotel = computed(() => {
   return hotel.value && user.value && hotel.value.owner_id === user.value.id;
-});
-
-const availableRooms = computed(() => {
-  return rooms.value.filter(room => room.status === 'Available');
 });
 
 // Métodos
@@ -177,7 +312,7 @@ const loadData = async () => {
     hotel.value = hotelData;
 
     // Cargar habitaciones
-    rooms.value = await roomRepository.findByHotelId(hotelId.value);
+    loadRooms();
   } catch (error) {
     console.error('Error loading hotel data:', error);
     toast.add({
@@ -191,11 +326,41 @@ const loadData = async () => {
   }
 };
 
+const loadRooms = async () => {
+  loadingRooms.value = true;
+  try {
+    rooms.value = await roomRepository.findByHotelId(hotelId.value);
+  } catch (error) {
+    console.error('Error loading rooms:', error);
+    toast.add({
+      severity: 'error',
+      summary: t('common.error'),
+      detail: error.message,
+      life: 3000
+    });
+  } finally {
+    loadingRooms.value = false;
+  }
+};
+
 const formatPrice = (price) => {
   return new Intl.NumberFormat('es-PE', {
     style: 'currency',
     currency: 'PEN'
   }).format(price);
+};
+
+const getStatusSeverity = (status) => {
+  switch (status) {
+    case 'Available':
+      return 'success';
+    case 'Occupied':
+      return 'warning';
+    case 'Maintenance':
+      return 'danger';
+    default:
+      return 'info';
+  }
 };
 
 const goBack = () => {
@@ -214,8 +379,20 @@ const viewRoom = (id) => {
   router.push(`/rooms/${id}`);
 };
 
+const editRoom = (id) => {
+  router.push(`/rooms/${id}/edit`);
+};
+
+const createRoom = () => {
+  router.push(`/hotels/${hotelId.value}/rooms/create`);
+};
+
 const reserveRoom = (id) => {
   router.push(`/rooms/${id}/reserve`);
+};
+
+const goToSubscriptions = () => {
+  router.push('/subscriptions');
 };
 
 // Ciclo de vida
@@ -233,5 +410,38 @@ onMounted(() => {
   border-radius: 8px;
   object-fit: cover;
   max-height: 300px;
+}
+
+.room-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.room-grid-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.room-list-image {
+  width: 200px;
+  height: 140px;
+  object-fit: cover;
+}
+
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+@media (max-width: 768px) {
+  .room-list-image {
+    width: 100%;
+    height: 160px;
+  }
 }
 </style>

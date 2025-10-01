@@ -2,59 +2,66 @@
   <div class="subscriptions">
     <div class="p-card p-shadow-2 mb-4">
       <div class="p-card-body">
-        <div class="p-card-title">{{ $t('subscriptions.list') }}</div>
-        <div class="p-card-content">
-          <!-- Mostrar suscripción actual si existe -->
-          <div v-if="currentSubscription" class="current-subscription mb-5">
-            <h3>{{ $t('subscriptions.currentPlan') }}</h3>
-            <div class="p-card p-shadow-1 p-4">
-              <div class="flex align-items-center justify-content-between">
-                <div>
-                  <div class="text-xl font-bold">{{ $t(`subscriptions.${currentSubscription.plan.toLowerCase()}`) }}</div>
-                  <div class="mt-2">{{ $t('subscriptions.expiresOn') }}: {{ formatDate(currentSubscription.endDate) }}</div>
-                  <div class="mt-1">{{ $t('subscriptions.maxRooms') }}: {{ currentSubscription.cant_rooms }}</div>
-                </div>
-                <Tag :value="currentSubscription.status" severity="success" />
+        <div class="flex justify-content-between align-items-center mb-4">
+          <div class="p-card-title">{{ $t('subscriptions.list') }}</div>
+          <Button
+            icon="pi pi-arrow-left"
+            :label="$t('common.back')"
+            class="p-button-secondary"
+            @click="goBack"
+          />
+        </div>
+
+        <!-- Mostrar suscripción actual si existe -->
+        <div v-if="currentSubscription" class="current-subscription mb-5">
+          <h3>{{ $t('subscriptions.currentPlan') }}</h3>
+          <div class="p-card p-shadow-1 p-4">
+            <div class="flex align-items-center justify-content-between">
+              <div>
+                <div class="text-xl font-bold">{{ $t(`subscriptions.${currentSubscription.plan.toLowerCase()}`) }}</div>
+                <div class="mt-2">{{ $t('subscriptions.expiresOn') }}: {{ formatDate(currentSubscription.endDate) }}</div>
+                <div class="mt-1">{{ $t('subscriptions.maxRooms') }}: {{ currentSubscription.cant_rooms }}</div>
               </div>
+              <Tag :value="currentSubscription.status || 'active'" severity="success" />
             </div>
           </div>
+        </div>
 
-          <div v-if="!hasActiveSubscription" class="available-plans">
-            <h3>{{ $t('subscriptions.list') }}</h3>
-            <div v-if="loading" class="flex justify-content-center my-5">
-              <ProgressSpinner />
-            </div>
-            <div v-else class="grid">
-              <div v-for="plan in subscriptionPlans" :key="plan.id" class="col-12 md:col-4">
-                <div class="p-card p-shadow-2 h-full plan-card">
-                  <div class="p-card-body">
-                    <div class="plan-header">
-                      <div class="plan-name">{{ $t(`subscriptions.${plan.plan.toLowerCase()}`) }}</div>
-                      <div class="plan-price">{{ formatPrice(plan.price) }}</div>
+        <div v-if="!hasActiveSubscription" class="available-plans">
+          <h3>{{ $t('subscriptions.list') }}</h3>
+          <div v-if="loading" class="flex justify-content-center my-5">
+            <ProgressSpinner />
+          </div>
+          <div v-else class="grid">
+            <div v-for="plan in subscriptionPlans" :key="plan.id" class="col-12 md:col-4 mb-3">
+              <div class="p-card p-shadow-2 h-full plan-card">
+                <div class="p-card-body">
+                  <div class="plan-header">
+                    <div class="plan-name">{{ $t(`subscriptions.${plan.plan.toLowerCase()}`) }}</div>
+                    <div class="plan-price">{{ formatPrice(plan.price) }}</div>
+                  </div>
+                  <div class="plan-details">
+                    <div class="mb-2">{{ $t('subscriptions.duration') }}: {{ plan.duration_months }} {{ plan.duration_months === 1 ? 'mes' : 'meses' }}</div>
+                    <div class="mb-3">{{ $t('subscriptions.maxRooms') }}: {{ plan.cant_rooms }}</div>
+
+                    <div v-if="plan.features && plan.features.length > 0" class="plan-features">
+                      <div class="text-sm font-bold mb-2">{{ $t('subscriptions.features') }}:</div>
+                      <ul>
+                        <li v-for="(feature, idx) in plan.features" :key="idx">
+                          <i class="pi pi-check mr-2 text-success"></i>
+                          <span>{{ feature }}</span>
+                        </li>
+                      </ul>
                     </div>
-                    <div class="plan-details">
-                      <div class="mb-2">{{ $t('subscriptions.duration') }}: {{ plan.duration_months }} {{ plan.duration_months === 1 ? 'mes' : 'meses' }}</div>
-                      <div class="mb-3">{{ $t('subscriptions.maxRooms') }}: {{ plan.cant_rooms }}</div>
 
-                      <div v-if="plan.features && plan.features.length > 0" class="plan-features">
-                        <div class="text-sm font-bold mb-2">{{ $t('subscriptions.features') }}:</div>
-                        <ul>
-                          <li v-for="(feature, idx) in plan.features" :key="idx">
-                            <i class="pi pi-check mr-2 text-success"></i>
-                            <span>{{ feature }}</span>
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div class="mt-4">
-                        <Button
-                          :label="$t('subscriptions.subscribe')"
-                          class="p-button-primary w-full"
-                          @click="subscribe(plan)"
-                          :disabled="subscribing"
-                          :loading="subscribing && selectedPlanId === plan.id"
-                        />
-                      </div>
+                    <div class="mt-4">
+                      <Button
+                        :label="$t('subscriptions.subscribe')"
+                        class="p-button-primary w-full"
+                        @click="subscribe(plan)"
+                        :disabled="subscribing"
+                        :loading="subscribing && selectedPlanId === plan.id"
+                      />
                     </div>
                   </div>
                 </div>
@@ -75,11 +82,12 @@
     >
       <div class="confirmation-content">
         <div v-if="selectedPlan">
-          <div class="mb-4">{{ $t('common.confirm') }} {{ $t('subscriptions.subscribe').toLowerCase() }} {{ $t('common.to') }}:</div>
+          <div class="mb-4">{{ $t('common.confirm') }} {{ $t('subscriptions.subscribe').toLowerCase() }}:</div>
           <div class="p-card p-shadow-1 p-3 mb-4">
             <div class="text-xl font-bold">{{ $t(`subscriptions.${selectedPlan.plan.toLowerCase()}`) }}</div>
             <div class="mt-2">{{ formatPrice(selectedPlan.price) }}</div>
-            <div class="mt-1">{{ plan.duration_months }} {{ plan.duration_months === 1 ? 'mes' : 'meses' }}</div>
+            <div class="mt-1">{{ selectedPlan.duration_months }} {{ selectedPlan.duration_months === 1 ? 'mes' : 'meses' }}</div>
+            <div class="mt-1">{{ $t('subscriptions.maxRooms') }}: {{ selectedPlan.cant_rooms }}</div>
           </div>
         </div>
       </div>
@@ -176,6 +184,10 @@ const formatDate = (dateString) => {
   return new Date(dateString).toLocaleDateString();
 };
 
+const goBack = () => {
+  router.push('/dashboard');
+};
+
 const subscribe = (plan) => {
   selectedPlan.value = plan;
   selectedPlanId.value = plan.id;
@@ -195,21 +207,37 @@ const confirmSubscription = async () => {
 
   try {
     // Crear suscripción
-    const newSubscription = await subscriptionRepository.subscribeToPlan(
-      user.value.id,
-      selectedPlan.value.id
-    );
+    const startDate = new Date();
+    const endDate = new Date();
+    endDate.setMonth(endDate.getMonth() + parseInt(selectedPlan.value.duration_months));
+
+    const subscriptionData = {
+      userId: user.value.id,
+      plan: selectedPlan.value.plan,
+      cant_rooms: selectedPlan.value.cant_rooms,
+      duration_months: selectedPlan.value.duration_months,
+      startDate: startDate.toISOString(),
+      endDate: endDate.toISOString(),
+      status: 'active',
+      price: selectedPlan.value.price,
+      features: selectedPlan.value.features
+    };
+
+    // Crear nueva suscripción
+    const newSubscription = await subscriptionRepository.create(subscriptionData);
 
     if (newSubscription) {
       // Actualizar el usuario con la nueva suscripción
-      const updatedUser = await userRepository.update(user.value.id, {
+      const updatedUserData = {
         ...user.value,
         subscription_id: newSubscription.id
-      });
+      };
+
+      const updatedUser = await userRepository.update(user.value.id, updatedUserData);
 
       if (updatedUser) {
         // Actualizar usuario en localStorage
-        userRepository.saveToLocalStorage(updatedUser.toPrimitives());
+        userRepository.saveToLocalStorage(updatedUser);
         user.value = updatedUser;
         currentSubscription.value = newSubscription;
 
@@ -221,7 +249,9 @@ const confirmSubscription = async () => {
         });
 
         // Redirigir al dashboard
-        router.push('/dashboard');
+        setTimeout(() => {
+          router.push('/dashboard');
+        }, 1500);
       }
     } else {
       throw new Error('No se pudo completar la suscripción');
