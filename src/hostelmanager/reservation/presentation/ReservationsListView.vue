@@ -13,11 +13,11 @@
           </div>
           <p>{{ $t('reservations.noReservations') }}</p>
           <Button
-            v-if="isVisitor"
-            :label="$t('hotels.list')"
-            icon="pi pi-search"
-            class="p-button-info mt-3"
-            @click="goToHotels"
+              v-if="isVisitor"
+              :label="$t('hotels.list')"
+              icon="pi pi-search"
+              class="p-button-info mt-3"
+              @click="goToHotels"
           />
         </div>
         <div v-else>
@@ -26,32 +26,32 @@
             <div class="p-input-icon-left flex-grow-1">
               <i class="pi pi-search"></i>
               <InputText
-                v-model="searchQuery"
-                :placeholder="$t('common.search')"
-                class="w-full"
+                  v-model="searchQuery"
+                  :placeholder="$t('common.search')"
+                  class="w-full"
               />
             </div>
             <Dropdown
-              v-model="statusFilter"
-              :options="statusOptions"
-              optionLabel="name"
-              optionValue="value"
-              :placeholder="$t('reservations.status')"
+                v-model="statusFilter"
+                :options="statusOptions"
+                optionLabel="name"
+                optionValue="value"
+                :placeholder="$t('reservations.status')"
             />
           </div>
 
           <!-- Tabla de reservas -->
           <DataTable
-            :value="filteredReservations"
-            stripedRows
-            :paginator="true"
-            :rows="10"
-            responsiveLayout="scroll"
-            class="p-datatable-sm"
-            :rowsPerPageOptions="[10, 20, 50]"
-            v-model:filters="filters"
-            filterDisplay="menu"
-            :loading="loading"
+              :value="filteredReservations"
+              stripedRows
+              :paginator="true"
+              :rows="10"
+              responsiveLayout="scroll"
+              class="p-datatable-sm"
+              :rowsPerPageOptions="[10, 20, 50]"
+              v-model:filters="filters"
+              filterDisplay="menu"
+              :loading="loading"
           >
             <Column field="id" :header="$t('reservations.id')" :sortable="true" style="width: 100px"></Column>
 
@@ -87,8 +87,8 @@
             <Column field="status" :header="$t('reservations.status')" :sortable="true">
               <template #body="slotProps">
                 <Tag
-                  :value="$t(`reservations.${slotProps.data.status.toLowerCase()}`)"
-                  :severity="getStatusSeverity(slotProps.data.status)"
+                    :value="$t(`reservations.${slotProps.data.status.toLowerCase()}`)"
+                    :severity="getStatusSeverity(slotProps.data.status)"
                 />
               </template>
             </Column>
@@ -97,17 +97,17 @@
               <template #body="slotProps">
                 <div class="flex gap-1">
                   <Button
-                    icon="pi pi-eye"
-                    class="p-button-rounded p-button-info p-button-sm"
-                    v-tooltip.top="$t('rooms.view')"
-                    @click="viewRoom(getRoomDetails(slotProps.data.room_id)?.id)"
+                      icon="pi pi-eye"
+                      class="p-button-rounded p-button-info p-button-sm"
+                      v-tooltip.top="$t('rooms.view')"
+                      @click="viewRoom(getRoomDetails(slotProps.data.room_id)?.id)"
                   />
                   <Button
-                    v-if="canCancelReservation(slotProps.data)"
-                    icon="pi pi-times"
-                    class="p-button-rounded p-button-danger p-button-sm"
-                    v-tooltip.top="$t('reservations.cancel')"
-                    @click="confirmCancelReservation(slotProps.data)"
+                      v-if="canCancelReservation(slotProps.data)"
+                      icon="pi pi-times"
+                      class="p-button-rounded p-button-danger p-button-sm"
+                      v-tooltip.top="$t('reservations.cancel')"
+                      @click="confirmCancelReservation(slotProps.data)"
                   />
                 </div>
               </template>
@@ -119,10 +119,10 @@
 
     <!-- Diálogo de confirmación de cancelación -->
     <Dialog
-      v-model:visible="cancelDialog"
-      :style="{ width: '450px' }"
-      :header="$t('reservations.cancel')"
-      :modal="true"
+        v-model:visible="cancelDialog"
+        :style="{ width: '450px' }"
+        :header="$t('reservations.cancel')"
+        :modal="true"
     >
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
@@ -141,17 +141,17 @@
       </div>
       <template #footer>
         <Button
-          :label="$t('common.no')"
-          icon="pi pi-times"
-          class="p-button-text"
-          @click="cancelDialog = false"
+            :label="$t('common.no')"
+            icon="pi pi-times"
+            class="p-button-text"
+            @click="cancelDialog = false"
         />
         <Button
-          :label="$t('common.yes')"
-          icon="pi pi-check"
-          class="p-button-danger"
-          @click="cancelReservation"
-          :loading="canceling"
+            :label="$t('common.yes')"
+            icon="pi pi-check"
+            class="p-button-danger"
+            @click="cancelReservation"
+            :loading="canceling"
         />
       </template>
     </Dialog>
@@ -163,7 +163,6 @@ import { ref, computed, onMounted, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'primevue/usetoast';
-import { FilterMatchMode, FilterOperator } from 'primevue/api';
 import { ReservationRepository } from '../infrastructure/ReservationRepository';
 import { RoomRepository } from '../../room/infrastructure/RoomRepository';
 import { HotelRepository } from '../../hotels/infrastructure/HotelRepository';
@@ -200,10 +199,9 @@ const statusOptions = [
   { name: t('reservations.cancelled'), value: 'Cancelled' },
 ];
 
-// Filtros para DataTable
+// Reemplazar el objeto filters basado en FilterMatchMode con un objeto simple
 const filters = reactive({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  status: { value: null, matchMode: FilterMatchMode.EQUALS },
+  global: { value: null }
 });
 
 // Propiedades computadas
@@ -226,11 +224,11 @@ const filteredReservations = computed(() => {
       const hotel = room ? getHotelById(room.hotel_id) : null;
 
       return (
-        (room && room.room_number.toLowerCase().includes(query)) ||
-        (hotel && hotel.name.toLowerCase().includes(query)) ||
-        reservation.start_date.toLowerCase().includes(query) ||
-        reservation.end_date.toLowerCase().includes(query) ||
-        reservation.status.toLowerCase().includes(query)
+          (room && room.room_number.toLowerCase().includes(query)) ||
+          (hotel && hotel.name.toLowerCase().includes(query)) ||
+          reservation.start_date.toLowerCase().includes(query) ||
+          reservation.end_date.toLowerCase().includes(query) ||
+          reservation.status.toLowerCase().includes(query)
       );
     });
   }
@@ -395,4 +393,3 @@ onMounted(() => {
   font-weight: 500;
 }
 </style>
-

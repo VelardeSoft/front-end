@@ -100,6 +100,20 @@
         "Gimnasio"
       ],
       "image": "https://placehold.co/600x400?text=Hotel+Lima+Plaza"
+    },
+    {
+      "id": "4df2",
+      "name": "Teresita",
+      "email": "u20211c221@gmail.com",
+      "address": "Alamadena",
+      "phone": "987654321",
+      "description": "Es muy bonita",
+      "image": "https://placehold.co/600x400?text=Hotel+Image",
+      "amenities": [],
+      "owner_id": "2",
+      "subscription_id": 4,
+      "createdAt": "2025-10-01T18:58:53.719Z",
+      "updatedAt": "2025-10-01T18:58:53.719Z"
     }
   ],
   "rooms": [
