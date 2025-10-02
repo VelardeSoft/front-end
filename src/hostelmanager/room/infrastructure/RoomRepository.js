@@ -165,7 +165,7 @@ export class RoomRepository {
                 throw new Error(`Room with id ${id} not found`);
             }
 
-            return await this.update(id, { status });
+            return await this.update(id, room);
         } catch (error) {
             console.error(`Error updating status for room ${id}:`, error);
             return null;

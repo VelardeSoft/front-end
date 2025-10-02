@@ -249,7 +249,7 @@ const submitted = ref(false);
 const confirmationDialog = ref(false);
 const room = ref(null);
 const hotel = ref(null);
-const roomId = computed(() => Number(route.params.id));
+const roomId = computed(() => route.params.id);
 
 // Fecha mínima para check-in (hoy)
 const minDate = new Date();

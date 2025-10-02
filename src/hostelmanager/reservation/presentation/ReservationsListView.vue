@@ -21,7 +21,6 @@
           />
         </div>
         <div v-else>
-          <!-- Filtros -->
           <div class="flex mb-3 gap-3 flex-column md:flex-row">
             <div class="p-input-icon-left flex-grow-1">
               <i class="pi pi-search"></i>
@@ -40,31 +39,28 @@
             />
           </div>
 
-          <!-- Tabla de reservas -->
           <DataTable
-              :value="filteredReservations"
+              :value="processedReservations"
               stripedRows
               :paginator="true"
               :rows="10"
               responsiveLayout="scroll"
               class="p-datatable-sm"
               :rowsPerPageOptions="[10, 20, 50]"
-              v-model:filters="filters"
-              filterDisplay="menu"
               :loading="loading"
           >
             <Column field="id" :header="$t('reservations.id')" :sortable="true" style="width: 100px"></Column>
 
-            <Column field="room_info" :header="$t('reservations.room')" :sortable="true">
+            <Column field="room_details.room_number" :header="$t('reservations.room')" :sortable="true">
               <template #body="slotProps">
                 <div class="flex align-items-center gap-2">
-                  <div v-if="getRoomDetails(slotProps.data.room_id)" class="room-info">
-                    {{ getRoomDetails(slotProps.data.room_id).room_number }} -
-                    {{ $t(`rooms.types.${getRoomDetails(slotProps.data.room_id).typeroom.toLowerCase()}`) }}
-                    ({{ getHotelName(getRoomDetails(slotProps.data.room_id).hotel_id) }})
+                  <div v-if="slotProps.data.room_details" class="room-info">
+                    {{ slotProps.data.room_details.room_number }} -
+                    {{ slotProps.data.typeroom_translated }}
+                    ({{ slotProps.data.hotel_name }})
                   </div>
                   <div v-else>
-                    {{ $t('rooms.notFound') }}
+                    <Tag :value="`${$t('rooms.notFound')} (${$t('common.unknown')})`" severity="info" />
                   </div>
                 </div>
               </template>
@@ -100,7 +96,8 @@
                       icon="pi pi-eye"
                       class="p-button-rounded p-button-info p-button-sm"
                       v-tooltip.top="$t('rooms.view')"
-                      @click="viewRoom(getRoomDetails(slotProps.data.room_id)?.id)"
+                      @click="viewRoom(slotProps.data.room_details?.id)"
+                      :disabled="!slotProps.data.room_details"
                   />
                   <Button
                       v-if="canCancelReservation(slotProps.data)"
@@ -117,7 +114,6 @@
       </div>
     </div>
 
-    <!-- Diálogo de confirmación de cancelación -->
     <Dialog
         v-model:visible="cancelDialog"
         :style="{ width: '450px' }"
@@ -127,15 +123,17 @@
       <div class="confirmation-content">
         <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem" />
         <span>{{ $t('reservations.cancelConfirm') }}</span>
-        <div v-if="reservationToCancel && getRoomDetails(reservationToCancel.room_id)" class="mt-3">
-          <div>
-            <strong>{{ getHotelName(getRoomDetails(reservationToCancel.room_id).hotel_id) }}</strong>
-          </div>
-          <div>
-            {{ $t('rooms.roomNumber') }} {{ getRoomDetails(reservationToCancel.room_id).room_number }}
-          </div>
-          <div>
-            {{ formatDate(reservationToCancel.start_date) }} - {{ formatDate(reservationToCancel.end_date) }}
+        <div v-if="reservationToCancel" class="mt-3">
+          <div v-if="getRoomDetails(reservationToCancel.room_id)">
+            <div>
+              <strong>{{ getHotelName(getRoomDetails(reservationToCancel.room_id).hotel_id) }}</strong>
+            </div>
+            <div>
+              {{ $t('rooms.roomNumber') }} {{ getRoomDetails(reservationToCancel.room_id).room_number }}
+            </div>
+            <div>
+              {{ formatDate(reservationToCancel.start_date) }} - {{ formatDate(reservationToCancel.end_date) }}
+            </div>
           </div>
         </div>
       </div>
@@ -159,7 +157,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, reactive } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useI18n } from 'vue-i18n';
 import { useToast } from 'primevue/usetoast';
@@ -199,64 +197,111 @@ const statusOptions = [
   { name: t('reservations.cancelled'), value: 'Cancelled' },
 ];
 
-// Reemplazar el objeto filters basado en FilterMatchMode con un objeto simple
-const filters = reactive({
-  global: { value: null }
-});
+const filters = ref({});
 
 // Propiedades computadas
 const isOwner = computed(() => user.value?.user_type === 'Owner');
 const isVisitor = computed(() => user.value?.user_type === 'Visitor');
 
-const filteredReservations = computed(() => {
-  let result = reservations.value;
+// Funciones accesorias: TODAS las comparaciones usan String()
+const getRoomDetails = (roomId) => {
+  return rooms.value.find(room => String(room.id) === String(roomId));
+};
 
-  // Filtrar por estado si hay un filtro seleccionado
+const getHotelById = (hotelId) => {
+  return hotels.value.find(hotel => String(hotel.id) === String(hotelId));
+};
+
+const getHotelName = (hotelId) => {
+  const hotel = getHotelById(hotelId);
+  return hotel ? hotel.name : t('common.unknown');
+};
+
+/**
+ * Propiedad Computada: Pre-procesa y filtra los datos.
+ */
+const processedReservations = computed(() => {
+  // 1. Enriquecer los datos
+  let result = reservations.value.map(reservation => {
+    const room = getRoomDetails(reservation.room_id);
+    const hotel = room ? getHotelById(room.hotel_id) : null;
+
+    const typeroom_translated = room?.typeroom
+        ? t(`rooms.types.${room.typeroom.toLowerCase()}`)
+        : t('rooms.notFound');
+
+    return {
+      ...reservation,
+      room_details: room,
+      hotel_name: hotel ? hotel.name : t('common.unknown'),
+      typeroom_translated: typeroom_translated,
+
+      searchable_text: `${room?.room_number || ''} ${hotel?.name || ''} ${typeroom_translated} ${reservation.status}`.toLowerCase()
+    };
+  });
+
+  // 2. Aplicar filtro de estado
   if (statusFilter.value) {
-    result = result.filter(reservation => reservation.status === statusFilter.value);
+    result = result.filter(r => r.status === statusFilter.value);
   }
 
-  // Filtrar por búsqueda
+  // 3. Aplicar filtro de búsqueda global
   if (searchQuery.value.trim()) {
     const query = searchQuery.value.toLowerCase();
-    result = result.filter(reservation => {
-      const room = getRoomDetails(reservation.room_id);
-      const hotel = room ? getHotelById(room.hotel_id) : null;
-
-      return (
-          (room && room.room_number.toLowerCase().includes(query)) ||
-          (hotel && hotel.name.toLowerCase().includes(query)) ||
-          reservation.start_date.toLowerCase().includes(query) ||
-          reservation.end_date.toLowerCase().includes(query) ||
-          reservation.status.toLowerCase().includes(query)
-      );
-    });
+    result = result.filter(r =>
+        r.searchable_text.includes(query) ||
+        (r.start_date || '').toLowerCase().includes(query) ||
+        (r.end_date || '').toLowerCase().includes(query)
+    );
   }
 
   return result;
 });
+
 
 // Métodos
 const loadData = async () => {
   loading.value = true;
 
   try {
-    // Cargar reservaciones del usuario
+    // 1. Cargar reservaciones
     reservations.value = await reservationRepository.findByUserId(user.value.id);
 
-    // Cargar información de habitaciones
-    const roomIds = [...new Set(reservations.value.map(reservation => reservation.room_id))];
-    const roomsPromises = roomIds.map(id => roomRepository.findById(id));
-    const roomsData = await Promise.all(roomsPromises);
-    rooms.value = roomsData.filter(Boolean); // Filtrar valores nulos
+    // 2. Cargar información de habitaciones (Asegurando que los IDs sean strings)
+    const roomIds = [...new Set(reservations.value.map(reservation => String(reservation.room_id)).filter(id => id))];
 
-    // Cargar información de hoteles
-    const hotelIds = [...new Set(rooms.value.map(room => room.hotel_id))];
-    const hotelsPromises = hotelIds.map(id => hotelRepository.findById(id));
+    // Usamos async/await dentro del map y Promise.all para manejar errores de carga por ID
+    const roomsPromises = roomIds.map(async id => {
+      try {
+        return await roomRepository.findById(id);
+      } catch (e) {
+        console.error(`Error loading room ID ${id}:`, e);
+        return null;
+      }
+    });
+    const roomsData = await Promise.all(roomsPromises);
+    rooms.value = roomsData.filter(Boolean); // Filtrar resultados nulos/undefined
+
+    // 3. Cargar información de hoteles (CORRECCIÓN CLAVE: Limpieza estricta de IDs)
+    const hotelIds = [...new Set(
+        rooms.value
+            .map(room => room.hotel_id)
+            .filter(Boolean) // Elimina null, undefined, 0, o ""
+            .map(id => String(id)) // Asegura que todos los IDs sean strings
+    )];
+
+    const hotelsPromises = hotelIds.map(async id => {
+      try {
+        return await hotelRepository.findById(id);
+      } catch (e) {
+        console.error(`Error loading hotel ID ${id}:`, e);
+        return null;
+      }
+    });
     const hotelsData = await Promise.all(hotelsPromises);
-    hotels.value = hotelsData.filter(Boolean); // Filtrar valores nulos
+    hotels.value = hotelsData.filter(Boolean);
   } catch (error) {
-    console.error('Error loading reservations data:', error);
+    console.error('Error general loading reservations data:', error);
     toast.add({
       severity: 'error',
       summary: t('common.error'),
@@ -294,26 +339,14 @@ const getStatusSeverity = (status) => {
   }
 };
 
-const getRoomDetails = (roomId) => {
-  return rooms.value.find(room => room.id === roomId);
-};
-
-const getHotelById = (hotelId) => {
-  return hotels.value.find(hotel => hotel.id === hotelId);
-};
-
-const getHotelName = (hotelId) => {
-  const hotel = getHotelById(hotelId);
-  return hotel ? hotel.name : 'Desconocido';
-};
-
 const goToHotels = () => {
   router.push('/hotels');
 };
 
 const viewRoom = (roomId) => {
   if (roomId) {
-    router.push(`/rooms/${roomId}`);
+    // Aseguramos que el ID de la ruta sea un string válido
+    router.push(`/rooms/${String(roomId)}`);
   }
 };
 
@@ -332,11 +365,12 @@ const cancelReservation = async () => {
   canceling.value = true;
 
   try {
-    const result = await reservationRepository.cancelReservation(reservationToCancel.value.id);
+    // Aseguramos que el ID de la reserva es string
+    const result = await reservationRepository.cancelReservation(String(reservationToCancel.value.id));
 
     if (result) {
       // Actualizar la reserva en el estado local
-      const index = reservations.value.findIndex(r => r.id === reservationToCancel.value.id);
+      const index = reservations.value.findIndex(r => String(r.id) === String(reservationToCancel.value.id));
       if (index !== -1) {
         reservations.value[index] = result;
       }
@@ -344,10 +378,11 @@ const cancelReservation = async () => {
       // Liberar la habitación
       const room = getRoomDetails(reservationToCancel.value.room_id);
       if (room) {
-        await roomRepository.updateStatus(room.id, 'Available');
+        // Aseguramos que el ID de la habitación es string
+        await roomRepository.updateStatus(String(room.id), 'Available');
 
         // Actualizar la habitación en el estado local
-        const roomIndex = rooms.value.findIndex(r => r.id === room.id);
+        const roomIndex = rooms.value.findIndex(r => String(r.id) === String(room.id));
         if (roomIndex !== -1) {
           rooms.value[roomIndex].status = 'Available';
         }
