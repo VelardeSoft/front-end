@@ -203,7 +203,7 @@ const loading = ref(true);
 const saving = ref(false);
 const submitted = ref(false);
 const newAmenity = ref('');
-const hotelId = computed(() => Number(route.params.hotelId));
+const hotelId = computed(() => route.params.hotelId);
 
 // Opciones para los selectores
 const roomTypes = [

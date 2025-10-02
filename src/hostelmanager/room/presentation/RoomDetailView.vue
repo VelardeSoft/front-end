@@ -135,7 +135,7 @@ const user = ref(userRepository.getCurrentUser());
 const room = ref(null);
 const hotel = ref(null);
 const loading = ref(true);
-const roomId = computed(() => Number(route.params.id));
+const roomId = computed(() => route.params.id);
 
 // Propiedades computadas
 const isOwner = computed(() => user.value?.user_type === 'Owner');

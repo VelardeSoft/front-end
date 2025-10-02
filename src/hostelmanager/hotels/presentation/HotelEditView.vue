@@ -175,7 +175,7 @@ const loading = ref(true);
 const saving = ref(false);
 const submitted = ref(false);
 const newAmenity = ref('');
-const hotelId = computed(() => Number(route.params.id));
+const hotelId = computed(() => route.params.id);
 
 // Propiedades computadas
 const isOwner = computed(() => user.value?.user_type === 'Owner');

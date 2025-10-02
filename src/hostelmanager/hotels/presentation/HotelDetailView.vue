@@ -111,13 +111,27 @@
               <div class="mt-4">
                 <div class="flex justify-content-between align-items-center mb-3">
                   <h3 class="m-0">{{ $t('rooms.list') }}</h3>
-                  <Button
-                      v-if="isOwner && isOwnerOfHotel && hasSubscription"
-                      icon="pi pi-plus"
-                      :label="$t('rooms.create')"
-                      class="p-button-success p-button-sm"
-                      @click="createRoom"
-                  />
+                  <div class="flex gap-2">
+                    <Button
+                        @click="layout = 'grid'"
+                        icon="pi pi-th-large"
+                        :disabled="layout === 'grid'"
+                        class="p-button-text p-button-sm"
+                    />
+                    <Button
+                        @click="layout = 'list'"
+                        icon="pi pi-bars"
+                        :disabled="layout === 'list'"
+                        class="p-button-text p-button-sm"
+                    />
+                    <Button
+                        v-if="isOwner && isOwnerOfHotel && hasSubscription"
+                        icon="pi pi-plus"
+                        :label="$t('rooms.create')"
+                        class="p-button-success p-button-sm"
+                        @click="createRoom"
+                    />
+                  </div>
                 </div>
 
                 <div v-if="loadingRooms" class="flex justify-content-center my-5">
@@ -136,127 +150,119 @@
                       @click="createRoom"
                   />
                 </div>
-                <div v-else>
-                  <DataView :value="rooms" :layout="layout" :paginator="true" :rows="4">
-                    <template #header>
-                      <div class="flex justify-content-end">
-                        <DataViewLayoutOptions v-model="layout" />
-                      </div>
-                    </template>
 
-                    <template #grid="slotProps">
-                      <div v-if="slotProps.data" class="col-12 sm:col-6 xl:col-4 p-2">
-                        <div class="p-card room-card">
-                          <div class="relative">
-                            <img :src="slotProps.data.image" :alt="slotProps.data.room_number" class="room-grid-image" />
-                            <Tag
-                                :value="$t(`rooms.${slotProps.data.status.toLowerCase()}`)"
-                                :severity="getStatusSeverity(slotProps.data.status)"
-                                class="absolute right-0 top-0 m-2"
-                            />
-                          </div>
-                          <div class="p-card-body">
-                            <div class="flex justify-content-between align-items-center mb-2">
-                              <div class="font-bold">{{ $t('rooms.roomNumber') }} {{ slotProps.data.room_number }}</div>
-                              <div>{{ $t(`rooms.types.${slotProps.data.typeroom.toLowerCase()}`) }}</div>
-                            </div>
+                <div v-else class="grid">
+                  <template v-for="room in rooms" :key="room.id">
 
-                            <div class="flex justify-content-between align-items-center mb-3">
-                              <div>
-                                <i class="pi pi-users mr-1"></i>
-                                <span>{{ slotProps.data.capacity }}</span>
-                              </div>
-                              <div class="text-lg font-bold">{{ formatPrice(slotProps.data.price) }}</div>
-                            </div>
-
-                            <div class="flex justify-content-between">
-                              <Button
-                                  :label="$t('rooms.view')"
-                                  icon="pi pi-eye"
-                                  class="p-button-info p-button-sm"
-                                  @click="viewRoom(slotProps.data.id)"
-                              />
-                              <div class="flex gap-1">
-                                <Button
-                                    v-if="isVisitor && slotProps.data.status === 'Available'"
-                                    icon="pi pi-calendar-plus"
-                                    class="p-button-success p-button-sm"
-                                    @click="reserveRoom(slotProps.data.id)"
-                                    v-tooltip.top="$t('rooms.reserve')"
-                                />
-                                <Button
-                                    v-if="isOwner && isOwnerOfHotel && hasSubscription"
-                                    icon="pi pi-pencil"
-                                    class="p-button-warning p-button-sm"
-                                    @click="editRoom(slotProps.data.id)"
-                                    v-tooltip.top="$t('rooms.editBtn')"
-                                />
-                              </div>
-                            </div>
-                          </div>
+                    <div v-if="layout === 'grid'" class="col-12 sm:col-6 xl:col-4 p-2">
+                      <div class="p-card room-card">
+                        <div class="relative">
+                          <img :src="room.image" :alt="room.room_number" class="room-grid-image" />
+                          <Tag
+                              :value="$t(`rooms.${room.status.toLowerCase()}`)"
+                              :severity="getStatusSeverity(room.status)"
+                              class="absolute right-0 top-0 m-2"
+                          />
                         </div>
-                      </div>
-                    </template>
-
-                    <template #list="slotProps">
-                      <div v-if="slotProps.data" class="col-12 p-2">
-                        <div class="flex p-card">
-                          <div class="relative">
-                            <img :src="slotProps.data.image" :alt="slotProps.data.room_number" class="room-list-image" />
-                            <Tag
-                                :value="$t(`rooms.${slotProps.data.status.toLowerCase()}`)"
-                                :severity="getStatusSeverity(slotProps.data.status)"
-                                class="absolute right-0 top-0 m-2"
-                            />
+                        <div class="p-card-body">
+                          <div class="flex justify-content-between align-items-center mb-2">
+                            <div class="font-bold">{{ $t('rooms.roomNumber') }} {{ room.room_number }}</div>
+                            <div>{{ $t(`rooms.types.${room.typeroom.toLowerCase()}`) }}</div>
                           </div>
-                          <div class="flex-1 flex flex-column p-4">
-                            <div class="flex justify-content-between">
-                              <div>
-                                <div class="font-bold text-xl mb-1">{{ $t('rooms.roomNumber') }} {{ slotProps.data.room_number }}</div>
-                                <div class="mb-2">
-                                  {{ $t(`rooms.types.${slotProps.data.typeroom.toLowerCase()}`) }} -
-                                  <span><i class="pi pi-users"></i> {{ slotProps.data.capacity }}</span>
-                                </div>
-                              </div>
-                              <div class="text-2xl font-bold">{{ formatPrice(slotProps.data.price) }}</div>
+
+                          <div class="flex justify-content-between align-items-center mb-3">
+                            <div>
+                              <i class="pi pi-users mr-1"></i>
+                              <span>{{ room.capacity }}</span>
                             </div>
+                            <div class="text-lg font-bold">{{ formatPrice(room.price) }}</div>
+                          </div>
 
-                            <div v-if="slotProps.data.description" class="my-2">{{ slotProps.data.description }}</div>
-
-                            <div v-if="slotProps.data.amenities && slotProps.data.amenities.length > 0" class="mb-3">
-                              <div class="text-sm font-bold mb-1">{{ $t('rooms.amenities') }}:</div>
-                              <div class="flex flex-wrap gap-1">
-                                <Chip v-for="(amenity, index) in slotProps.data.amenities" :key="index" :label="amenity" />
-                              </div>
-                            </div>
-
-                            <div class="flex justify-content-end gap-2 mt-auto">
+                          <div class="flex justify-content-between">
+                            <Button
+                                :label="$t('rooms.view')"
+                                icon="pi pi-eye"
+                                class="p-button-info p-button-sm"
+                                @click="viewRoom(room.id)"
+                            />
+                            <div class="flex gap-1">
                               <Button
-                                  :label="$t('rooms.view')"
-                                  icon="pi pi-eye"
-                                  class="p-button-info p-button-sm"
-                                  @click="viewRoom(slotProps.data.id)"
-                              />
-                              <Button
-                                  v-if="isVisitor && slotProps.data.status === 'Available'"
-                                  :label="$t('rooms.reserve')"
+                                  v-if="isVisitor && room.status === 'Available'"
                                   icon="pi pi-calendar-plus"
                                   class="p-button-success p-button-sm"
-                                  @click="reserveRoom(slotProps.data.id)"
+                                  @click="reserveRoom(room.id)"
+                                  v-tooltip.top="$t('rooms.reserve')"
                               />
                               <Button
                                   v-if="isOwner && isOwnerOfHotel && hasSubscription"
-                                  :label="$t('rooms.editBtn')"
                                   icon="pi pi-pencil"
                                   class="p-button-warning p-button-sm"
-                                  @click="editRoom(slotProps.data.id)"
+                                  @click="editRoom(room.id)"
+                                  v-tooltip.top="$t('rooms.editBtn')"
                               />
                             </div>
                           </div>
                         </div>
                       </div>
-                    </template>
-                  </DataView>
+                    </div>
+
+                    <div v-else-if="layout === 'list'" class="col-12 p-2">
+                      <div class="flex p-card">
+                        <div class="relative">
+                          <img :src="room.image" :alt="room.room_number" class="room-list-image" />
+                          <Tag
+                              :value="$t(`rooms.${room.status.toLowerCase()}`)"
+                              :severity="getStatusSeverity(room.status)"
+                              class="absolute right-0 top-0 m-2"
+                          />
+                        </div>
+                        <div class="flex-1 flex flex-column p-4">
+                          <div class="flex justify-content-between">
+                            <div>
+                              <div class="font-bold text-xl mb-1">{{ $t('rooms.roomNumber') }} {{ room.room_number }}</div>
+                              <div class="mb-2">
+                                {{ $t(`rooms.types.${room.typeroom.toLowerCase()}`) }} -
+                                <span><i class="pi pi-users"></i> {{ room.capacity }}</span>
+                              </div>
+                            </div>
+                            <div class="text-2xl font-bold">{{ formatPrice(room.price) }}</div>
+                          </div>
+
+                          <div v-if="room.description" class="my-2">{{ room.description }}</div>
+
+                          <div v-if="room.amenities && room.amenities.length > 0" class="mb-3">
+                            <div class="text-sm font-bold mb-1">{{ $t('rooms.amenities') }}:</div>
+                            <div class="flex flex-wrap gap-1">
+                              <Chip v-for="(amenity, index) in room.amenities" :key="index" :label="amenity" />
+                            </div>
+                          </div>
+
+                          <div class="flex justify-content-end gap-2 mt-auto">
+                            <Button
+                                :label="$t('rooms.view')"
+                                icon="pi pi-eye"
+                                class="p-button-info p-button-sm"
+                                @click="viewRoom(room.id)"
+                            />
+                            <Button
+                                v-if="isVisitor && room.status === 'Available'"
+                                :label="$t('rooms.reserve')"
+                                icon="pi pi-calendar-plus"
+                                class="p-button-success p-button-sm"
+                                @click="reserveRoom(room.id)"
+                            />
+                            <Button
+                                v-if="isOwner && isOwnerOfHotel && hasSubscription"
+                                :label="$t('rooms.editBtn')"
+                                icon="pi pi-pencil"
+                                class="p-button-warning p-button-sm"
+                                @click="editRoom(room.id)"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </template>
                 </div>
               </div>
             </div>
@@ -297,7 +303,7 @@ const loading = ref(true);
 const loadingRooms = ref(true);
 // Obtener el ID de la ruta
 const hotelId = computed(() => route.params.id);
-const layout = ref('grid');
+const layout = ref('grid'); // Valor inicial para el layout
 
 // Propiedades computadas
 const isOwner = computed(() => user.value?.user_type === 'Owner');
@@ -327,7 +333,7 @@ const loadData = async () => {
     hotel.value = hotelData;
 
     // Cargar habitaciones
-    loadRooms(id);
+    await loadRooms(id); // Esperar la carga de habitaciones
   } catch (error) {
     console.error('Error loading hotel data:', error);
     toast.add({
@@ -342,14 +348,12 @@ const loadData = async () => {
   }
 };
 
-// ✅ CORRECCIÓN 3: Lógica robusta para cargar y asignar habitaciones
 const loadRooms = async (hotelIdString) => {
   loadingRooms.value = true;
-  rooms.value = []; // Siempre inicializar a array vacío
+  rooms.value = [];
   try {
     let loadedRooms = await roomRepository.findByHotelId(hotelIdString);
 
-    // Asegurar que el resultado sea un array antes de asignarlo
     if (Array.isArray(loadedRooms)) {
       rooms.value = loadedRooms;
     } else {
@@ -358,12 +362,6 @@ const loadRooms = async (hotelIdString) => {
     }
   } catch (error) {
     console.error('Error loading rooms:', error);
-    toast.add({
-      severity: 'error',
-      summary: t('common.error'),
-      detail: error.message || t('common.unknownError'),
-      life: 3000
-    });
     rooms.value = [];
   } finally {
     loadingRooms.value = false;
@@ -382,6 +380,7 @@ const getStatusSeverity = (status) => {
     case 'Available':
       return 'success';
     case 'Occupied':
+    case 'Reserved': // Agregando Reserved si es un estado de la habitación
       return 'warning';
     case 'Maintenance':
       return 'danger';
