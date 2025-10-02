@@ -38,6 +38,24 @@
         "Estadísticas avanzadas",
         "Marketing integrado"
       ]
+    },
+    {
+      "userId": "3OLqhYS",
+      "plan": "Premium",
+      "cant_rooms": "50",
+      "duration_months": "12",
+      "startDate": "2025-10-02T07:56:24.969Z",
+      "endDate": "2026-10-02T07:56:24.969Z",
+      "status": "active",
+      "price": "399.9",
+      "features": [
+        "Habitaciones ilimitadas",
+        "12 meses de servicio",
+        "Soporte 24/7",
+        "Estadísticas avanzadas",
+        "Marketing integrado"
+      ],
+      "id": "nrqwAYz"
     }
   ],
   "users": [
@@ -62,6 +80,27 @@
       "address": "Av. Metropolitana, Lima",
       "subscription_id": null,
       "createdAt": "2025-10-01T19:49:20.414Z"
+    },
+    {
+      "id": "3OLqhYS",
+      "name": "Angelo Curi Marcelo",
+      "email": "curimarcelo8@gmail.com",
+      "password": ".Tere221@",
+      "user_type": "Owner",
+      "phone": "975149459",
+      "address": "Chorrillos",
+      "subscription_id": "nrqwAYz"
+    },
+    {
+      "name": "Angelo2",
+      "email": "curi22@gmail.com",
+      "password": "angel22",
+      "user_type": "Visitor",
+      "phone": "424",
+      "address": "242",
+      "subscription_id": null,
+      "createdAt": "2025-10-02T08:36:45.500Z",
+      "id": "atSnopY"
     }
   ],
   "hotels": [
@@ -116,26 +155,27 @@
       "subscription_id": "1",
       "createdAt": "2025-10-01T19:48:35.678Z",
       "updatedAt": "2025-10-01T19:48:35.678Z"
+    },
+    {
+      "id": "jUxgsFO",
+      "name": "Juanito25",
+      "address": "Chorrillos",
+      "phone": "975149459",
+      "email": "curimarcelo8@gmail.com",
+      "owner_id": "3OLqhYS",
+      "subscription_id": "nrqwAYz",
+      "description": "Mejores precios y habitaciones",
+      "amenities": [
+        "Desayuno",
+        "Limpieza personalizada",
+        "Piscina",
+        "Atención personal"
+      ],
+      "image": "https://media.istockphoto.com/id/119926339/es/foto/piscina-del-complejo-tur%C3%ADstico.jpg?s=612x612&w=0&k=20&c=xL-i7eF0tFmfvjZbWkOSvJTH5pzMVKWPt1iCTfZGwnw=",
+      "updatedAt": "2025-10-02T08:10:16.737Z"
     }
   ],
   "rooms": [
-    {
-      "id": "1",
-      "hotel_id": "1",
-      "room_number": "101",
-      "typeroom": "Single",
-      "capacity": "1",
-      "price": "89.9",
-      "status": "Available",
-      "amenities": [
-        "WiFi",
-        "Baño privado",
-        "TV",
-        "Aire acondicionado"
-      ],
-      "description": "Habitación individual con todas las comodidades",
-      "image": "https://placehold.co/600x400?text=Room+101"
-    },
     {
       "id": "2",
       "hotel_id": "1",
@@ -172,6 +212,18 @@
       ],
       "description": "Suite de lujo con dos habitaciones y sala de estar",
       "image": "https://placehold.co/600x400?text=Suite+201"
+    },
+    {
+      "id": "2d0zFsh",
+      "hotel_id": "jUxgsFO",
+      "room_number": "14",
+      "typeroom": "Double",
+      "capacity": 1,
+      "price": 4.54,
+      "status": "Available",
+      "amenities": [],
+      "description": "",
+      "image": "https://placehold.co/600x400?text=Room+Image"
     }
   ],
   "reservations": [
@@ -184,6 +236,26 @@
       "status": "Confirmed",
       "total_price": "1099.5",
       "created_at": "2025-09-01T00:00:00.000Z"
+    },
+    {
+      "room_id": "2",
+      "user_id": "atSnopY",
+      "start_date": "2025-10-02",
+      "end_date": "2025-10-03",
+      "status": "Pending",
+      "total_price": 129.9,
+      "created_at": "2025-10-02T09:24:03.470Z",
+      "id": "Zx342eg"
+    },
+    {
+      "room_id": "2d0zFsh",
+      "user_id": "atSnopY",
+      "start_date": "2025-10-02",
+      "end_date": "2025-10-03",
+      "status": "Pending",
+      "total_price": 4.54,
+      "created_at": "2025-10-02T09:26:47.107Z",
+      "id": "Xb0-Uy-"
     }
   ]
 }

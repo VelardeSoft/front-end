@@ -63,12 +63,22 @@ export class ReservationRepository {
      * @param {number} roomId - Room identifier
      * @returns {Promise<Reservation[]>} Array of Reservation entities
      */
-    async findByRoomId(roomId) {
+    // Nombre del método cambiado de findByRoomId a findByRoomIds,
+// y se asegura que la comparación sea entre Strings para evitar errores de tipo.
+
+    async findByRoomId(roomIds) {
+        // Asegura que roomIds es un array, incluso si viene un solo ID o si es nulo.
+        const idsToFilter = Array.isArray(roomIds) ? roomIds.map(String) : [String(roomIds)];
+
         try {
             const reservations = await this.findAll();
-            return reservations.filter(reservation => reservation.room_id === roomId);
+
+            // Filtra las reservas cuya room_id esté incluida en la lista de IDs proporcionada
+            return reservations.filter(reservation =>
+                idsToFilter.includes(String(reservation.room_id))
+            );
         } catch (error) {
-            console.error(`Error fetching reservations for room ${roomId}:`, error);
+            console.error(`Error fetching reservations for rooms ${roomIds}:`, error);
             return [];
         }
     }

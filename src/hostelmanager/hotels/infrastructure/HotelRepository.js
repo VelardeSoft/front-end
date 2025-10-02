@@ -49,9 +49,16 @@ export class HotelRepository {
      * @returns {Promise<Hotel[]>} Array of Hotel entities
      */
     async findByOwnerId(ownerId) {
+        // Asegura que el ID de búsqueda es un String
+        const ownerIdString = String(ownerId);
+
+        // Aquí, asumo que 'hotels' son objetos planos (primitivos)
         try {
             const hotels = await this.findAll();
-            return hotels.filter(hotel => hotel.owner_id === ownerId);
+
+            // CORRECCIÓN: Usamos String() en ambos lados de la comparación
+            return hotels.filter(hotel => String(hotel.owner_id) === ownerIdString);
+
         } catch (error) {
             console.error(`Error fetching hotels for owner ${ownerId}:`, error);
             return [];

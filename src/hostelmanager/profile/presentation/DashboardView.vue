@@ -7,15 +7,14 @@
           <h2>{{ $t('dashboard.welcome', { name: user?.name || '' }) }}</h2>
           <p>{{ isOwner ? $t('dashboard.ownerMessage') : $t('dashboard.visitorMessage') }}</p>
 
-          <!-- Alerta de suscripción para propietarios sin suscripción -->
           <Message v-if="isOwner && !hasSubscription" severity="warn" :closable="false">
             <div>
               <i class="pi pi-exclamation-circle mr-2"></i>
               <span>{{ $t('subscriptions.required') }}</span>
               <Button
-                :label="$t('subscriptions.subscribe')"
-                class="p-button-sm p-button-text ml-3"
-                @click="goToSubscriptions"
+                  :label="$t('subscriptions.subscribe')"
+                  class="p-button-sm p-button-text ml-3"
+                  @click="goToSubscriptions"
               />
             </div>
           </Message>
@@ -23,7 +22,6 @@
       </div>
     </div>
 
-    <!-- Estadísticas para propietarios -->
     <div v-if="isOwner" class="grid">
       <div class="col-12 md:col-4">
         <div class="p-card p-shadow-2 stats-card">
@@ -66,23 +64,30 @@
       </div>
     </div>
 
-    <!-- Listado de hoteles para visitantes -->
     <div v-else>
       <div class="p-card p-shadow-2">
         <div class="p-card-body">
           <div class="p-card-title mb-3">{{ $t('hotels.list') }}</div>
 
-          <!-- Buscador de hoteles -->
           <div class="p-input-icon-left mb-4 w-full">
             <i class="pi pi-search"></i>
             <InputText
-              v-model="searchQuery"
-              :placeholder="$t('common.search')"
-              class="w-full"
+                v-model="searchQuery"
+                :placeholder="$t('common.search')"
+                class="w-full"
             />
           </div>
 
-          <!-- Listado de hoteles -->
+          <Paginator
+              v-if="paginatedHotels.length > 0"
+              :rows="rowsPerPage"
+              :totalRecords="filteredHotels.length"
+              :rowsPerPageOptions="[6, 12, 18]"
+              @page="onPage"
+              :first="first"
+              class="mb-3"
+          />
+
           <div v-if="loading" class="flex justify-content-center my-5">
             <ProgressSpinner />
           </div>
@@ -93,60 +98,46 @@
             <p>{{ $t('hotels.noHotels') }}</p>
           </div>
           <div v-else>
-            <DataView :value="filteredHotels" :layout="layout" :paginator="true" :rows="6">
-              <template #header>
-                <div class="grid grid-nogutter">
-                  <div class="col-6 text-left">
-                    <Button @click="layout = 'grid'" icon="pi pi-th-large" :disabled="layout === 'grid'" />
-                    <Button @click="layout = 'list'" icon="pi pi-bars" :disabled="layout === 'list'" />
-                  </div>
-                </div>
-              </template>
+            <div class="grid">
+              <div
+                  v-for="hotel in paginatedHotels"
+                  :key="hotel.id"
+                  class="col-12 md:col-4 lg:col-3"
+              >
+                <div class="p-card p-shadow-2 m-2 hotel-card">
+                  <div class="p-card-body">
+                    <img :src="hotel.image" :alt="hotel.name" class="hotel-image" />
+                    <div class="hotel-name">{{ hotel.name }}</div>
+                    <div class="hotel-address">{{ hotel.address }}</div>
 
-              <template #grid="slotProps">
-                <div class="col-12 md:col-4">
-                  <div class="p-card p-shadow-2 m-2 hotel-card">
-                    <div class="p-card-body">
-                      <img :src="slotProps.data.image" alt="hotel" class="hotel-image" />
-                      <div class="hotel-name">{{ slotProps.data.name }}</div>
-                      <div class="hotel-address">{{ slotProps.data.address }}</div>
-                      <div class="mt-3">
-                        <Button
+                    <p class="text-sm text-600 overflow-hidden text-overflow-ellipsis whitespace-nowrap mb-3">
+                      {{ hotel.description }}
+                    </p>
+
+                    <div class="mt-auto flex justify-content-end">
+                      <Button
                           :label="$t('hotels.view')"
                           icon="pi pi-eye"
-                          class="p-button-sm"
-                          @click="viewHotel(slotProps.data.id)"
-                        />
-                      </div>
+                          class="p-button-sm p-button-info"
+                          @click="viewHotel(hotel.id)"
+                      />
                     </div>
                   </div>
                 </div>
-              </template>
-
-              <template #list="slotProps">
-                <div class="col-12">
-                  <div class="p-card p-shadow-2 m-2">
-                    <div class="p-card-body">
-                      <div class="flex flex-column md:flex-row">
-                        <img :src="slotProps.data.image" alt="hotel" class="hotel-image-list" />
-                        <div class="flex-1 flex flex-column align-items-start ml-3">
-                          <div class="font-bold text-xl mb-2">{{ slotProps.data.name }}</div>
-                          <div class="mb-2">{{ slotProps.data.address }}</div>
-                          <div class="mb-2">{{ slotProps.data.description }}</div>
-                          <Button
-                            :label="$t('hotels.rooms')"
-                            icon="pi pi-key"
-                            class="p-button-sm"
-                            @click="viewHotel(slotProps.data.id)"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </template>
-            </DataView>
+              </div>
+            </div>
           </div>
+
+          <Paginator
+              v-if="paginatedHotels.length > 0"
+              :rows="rowsPerPage"
+              :totalRecords="filteredHotels.length"
+              :rowsPerPageOptions="[6, 12, 18]"
+              @page="onPage"
+              :first="first"
+              class="mt-3"
+          />
+
         </div>
       </div>
     </div>
@@ -179,7 +170,10 @@ const hotels = ref([]);
 const rooms = ref([]);
 const reservations = ref([]);
 const searchQuery = ref('');
-const layout = ref('grid');
+
+// Estado de paginación
+const rowsPerPage = ref(6);
+const first = ref(0); // Índice del primer registro para la paginación
 
 // Propiedades computadas
 const isOwner = computed(() => user.value?.user_type === 'Owner');
@@ -190,17 +184,32 @@ const roomsCount = computed(() => isOwner.value ? rooms.value.length : 0);
 const reservationsCount = computed(() => reservations.value.length);
 
 const filteredHotels = computed(() => {
-  if (!searchQuery.value.trim()) {
-    return hotels.value;
+  let result = hotels.value;
+
+  if (searchQuery.value.trim()) {
+    const query = searchQuery.value.toLowerCase();
+    result = result.filter(hotel =>
+        hotel.name.toLowerCase().includes(query) ||
+        hotel.address.toLowerCase().includes(query) ||
+        hotel.description?.toLowerCase().includes(query)
+    );
   }
 
-  const query = searchQuery.value.toLowerCase();
-  return hotels.value.filter(hotel =>
-    hotel.name.toLowerCase().includes(query) ||
-    hotel.address.toLowerCase().includes(query) ||
-    hotel.description?.toLowerCase().includes(query)
-  );
+  // Resetea la paginación a la primera página si cambia el filtro
+  if (first.value > 0 && result.length < first.value) {
+    first.value = 0;
+  }
+
+  return result;
 });
+
+// Implementación de la paginación manual
+const paginatedHotels = computed(() => {
+  const start = first.value;
+  const end = first.value + rowsPerPage.value;
+  return filteredHotels.value.slice(start, end);
+});
+
 
 // Métodos
 const loadData = async () => {
@@ -209,21 +218,22 @@ const loadData = async () => {
   try {
     if (isOwner.value) {
       // Cargar hoteles del propietario
-      hotels.value = await hotelRepository.findByOwnerId(user.value.id);
+      hotels.value = await hotelRepository.findByOwnerId(String(user.value.id));
 
       // Cargar todas las habitaciones de los hoteles del propietario
       const roomsPromises = hotels.value.map(hotel =>
-        roomRepository.findByHotelId(hotel.id)
+          roomRepository.findByHotelId(String(hotel.id))
       );
       const roomsArrays = await Promise.all(roomsPromises);
-      rooms.value = roomsArrays.flat();
+      rooms.value = roomsArrays.flat().filter(Boolean);
+      
     } else {
       // Para visitantes, cargar todos los hoteles
       hotels.value = await hotelRepository.findAll();
     }
 
     // Cargar reservaciones del usuario
-    reservations.value = await reservationRepository.findByUserId(user.value.id);
+    reservations.value = await reservationRepository.findByUserId(String(user.value.id));
   } catch (error) {
     console.error('Error loading dashboard data:', error);
   } finally {
@@ -236,7 +246,13 @@ const goToSubscriptions = () => {
 };
 
 const viewHotel = (id) => {
-  router.push(`/hotels/${id}`);
+  router.push(`/hotels/${String(id)}`);
+};
+
+// Manejador del evento de paginación
+const onPage = (event) => {
+  first.value = event.first;
+  rowsPerPage.value = event.rows;
 };
 
 // Ciclo de vida
@@ -250,6 +266,7 @@ onMounted(() => {
   padding: 1rem;
 }
 
+/* --- Estilos para Estadísticas (Owner) --- */
 .stats-card .p-card-body {
   display: flex;
   align-items: center;
@@ -284,16 +301,17 @@ onMounted(() => {
   color: #666;
 }
 
+/* --- Estilos para Cards de Hotel (Visitor) --- */
 .hotel-card {
   height: 100%;
-  display: flex;
-  flex-direction: column;
 }
 
 .hotel-card .p-card-body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  /* Asegura que el botón se alinea al final */
+  justify-content: space-between;
 }
 
 .hotel-image {
@@ -304,13 +322,6 @@ onMounted(() => {
   margin-bottom: 1rem;
 }
 
-.hotel-image-list {
-  width: 200px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 4px;
-}
-
 .hotel-name {
   font-size: 1.2rem;
   font-weight: 600;
@@ -319,16 +330,11 @@ onMounted(() => {
 
 .hotel-address {
   color: #666;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 }
 
+/* Media Queries */
 @media (max-width: 768px) {
-  .hotel-image-list {
-    width: 100%;
-    height: 150px;
-    margin-bottom: 1rem;
-  }
-
   .stats-card .p-card-body {
     flex-direction: column;
     text-align: center;

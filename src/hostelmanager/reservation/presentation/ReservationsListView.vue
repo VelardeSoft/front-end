@@ -260,39 +260,68 @@ const processedReservations = computed(() => {
 
 
 // Métodos
+// Métodos
 const loadData = async () => {
   loading.value = true;
 
   try {
-    // 1. Cargar reservaciones
-    reservations.value = await reservationRepository.findByUserId(user.value.id);
+    // 1. Cargar reservaciones - LÓGICA DE FILTRADO POR ROL
+    let fetchedReservations = [];
 
-    // 2. Cargar información de habitaciones (Asegurando que los IDs sean strings)
+    if (isOwner.value) {
+      // 🛑 LÓGICA PARA OWNER: Cadena de filtros (Owner -> Hotel -> Room -> Reservation)
+
+      // A. Obtener todos los hoteles del Owner
+      const ownerHotels = await hotelRepository.findByOwnerId(user.value.id);
+
+      if (ownerHotels && ownerHotels.length > 0) {
+        // Aseguramos que los IDs son strings para consistencia en la búsqueda
+        const hotelIds = ownerHotels.map(h => String(h.id));
+
+        // B. Obtener todas las habitaciones de esos hoteles
+        const allRooms = await roomRepository.findByHotelId(hotelIds);
+        const ownerRoomIds = allRooms.map(r => String(r.id));
+
+        // C. Obtener todas las reservas para esas habitaciones
+        fetchedReservations = await reservationRepository.findByRoomId(ownerRoomIds);
+      }
+
+    } else {
+      // LÓGICA PARA VISITOR (o cualquier otro rol): Cargar reservas hechas por el usuario
+      fetchedReservations = await reservationRepository.findByUserId(user.value.id);
+    }
+
+    // Asignar al estado reactivo
+    reservations.value = fetchedReservations;
+
+
+    // 2. Cargar información de habitaciones (la lógica que enriquece los datos)
+    // Usamos las reservas que acabamos de cargar (fetchedReservations)
     const roomIds = [...new Set(reservations.value.map(reservation => String(reservation.room_id)).filter(id => id))];
 
-    // Usamos async/await dentro del map y Promise.all para manejar errores de carga por ID
+    // Carga de Rooms
     const roomsPromises = roomIds.map(async id => {
       try {
-        return await roomRepository.findById(id);
+        return await roomRepository.findById(String(id));
       } catch (e) {
         console.error(`Error loading room ID ${id}:`, e);
         return null;
       }
     });
     const roomsData = await Promise.all(roomsPromises);
-    rooms.value = roomsData.filter(Boolean); // Filtrar resultados nulos/undefined
+    rooms.value = roomsData.filter(Boolean);
 
-    // 3. Cargar información de hoteles (CORRECCIÓN CLAVE: Limpieza estricta de IDs)
+    // 3. Cargar información de hoteles
     const hotelIds = [...new Set(
         rooms.value
             .map(room => room.hotel_id)
-            .filter(Boolean) // Elimina null, undefined, 0, o ""
-            .map(id => String(id)) // Asegura que todos los IDs sean strings
+            .filter(Boolean)
+            .map(id => String(id))
     )];
 
     const hotelsPromises = hotelIds.map(async id => {
       try {
-        return await hotelRepository.findById(id);
+        return await hotelRepository.findById(String(id));
       } catch (e) {
         console.error(`Error loading hotel ID ${id}:`, e);
         return null;
@@ -300,6 +329,7 @@ const loadData = async () => {
     });
     const hotelsData = await Promise.all(hotelsPromises);
     hotels.value = hotelsData.filter(Boolean);
+
   } catch (error) {
     console.error('Error general loading reservations data:', error);
     toast.add({

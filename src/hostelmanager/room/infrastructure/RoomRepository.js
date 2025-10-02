@@ -54,41 +54,33 @@ export class RoomRepository {
 
     // RoomRepository.js
 
-    async findByHotelId(hotelId) {
-        let response = null; // ✅ 1. Inicializa response fuera del try
+    // Renombre su método en RoomRepository.js de findByHotelId a findByHotelIds
+    async findByHotelId(hotelIds) {
+        // Asegura que hotelIds es un array
+        const idsToFilter = Array.isArray(hotelIds) ? hotelIds.map(String) : [String(hotelIds)];
 
         try {
-            const hotelIdString = String(hotelId);
-            console.log('REPO LOG: Buscando habitaciones para Hotel ID:', hotelIdString);
+            // CORRECCIÓN CLAVE: Pasa la lista de IDs como una cadena separada por comas
+            // Esto depende de cómo su backend maneja los filtros de lista.
+            const hotelIdsQuery = idsToFilter.join(',');
+            console.log('REPO LOG: Buscando habitaciones para Hotel IDs:', hotelIdsQuery);
 
-            // ✅ 2. Asigna la respuesta al objeto inicializado
-            response = await this.endpoint.http.get(this.endpoint.endpointPath, {
+            const response = await this.endpoint.http.get(this.endpoint.endpointPath, {
                 params: {
-                    hotel_id: hotelIdString
+                    hotel_id: hotelIdsQuery
                 }
             });
 
+            // ... (el resto de su lógica de mapeo y retorno)
             const rawRooms = response.data;
-            console.log('REPO LOG: Datos crudos de la API recibidos:', rawRooms);
-
-            // Mapeo a entidades Room
-            const mappedRooms = rawRooms.map(room => {
-                const roomEntity = Room.fromPrimitives(room);
-                console.log('REPO LOG: Entidad mapeada:', roomEntity);
-                return roomEntity;
-            });
-
-            // Verificamos si hay algún elemento nulo o indefinido después del mapeo
+            const mappedRooms = rawRooms.map(room => Room.fromPrimitives(room));
             const validRooms = mappedRooms.filter(room => room !== null && room !== undefined);
-            console.log('REPO LOG: Habitaciones válidas a devolver:', validRooms);
 
-            // Retorna los objetos planos para una mejor reactividad en Vue
             return validRooms.map(room => room.toPrimitives());
 
         } catch (error) {
-            // Aquí manejamos el error, y como response se inicializó, si se necesitara, estaría definido.
-            console.error(`REPO ERROR: Error fetching rooms for hotel ${hotelId}:`, error);
-            return []; // Siempre devuelve un array vacío en caso de fallo
+            console.error(`REPO ERROR: Error fetching rooms for hotels ${hotelIds}:`, error);
+            return [];
         }
     }
     /**
