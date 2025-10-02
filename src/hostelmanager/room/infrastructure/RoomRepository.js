@@ -48,16 +48,49 @@ export class RoomRepository {
      * @param {number} hotelId - Hotel identifier
      * @returns {Promise<Room[]>} Array of Room entities
      */
+    // RoomRepository.js
+
+    // RoomRepository.js
+
+    // RoomRepository.js
+
     async findByHotelId(hotelId) {
+        let response = null; // ✅ 1. Inicializa response fuera del try
+
         try {
-            const rooms = await this.findAll();
-            return rooms.filter(room => room.hotel_id === hotelId);
+            const hotelIdString = String(hotelId);
+            console.log('REPO LOG: Buscando habitaciones para Hotel ID:', hotelIdString);
+
+            // ✅ 2. Asigna la respuesta al objeto inicializado
+            response = await this.endpoint.http.get(this.endpoint.endpointPath, {
+                params: {
+                    hotel_id: hotelIdString
+                }
+            });
+
+            const rawRooms = response.data;
+            console.log('REPO LOG: Datos crudos de la API recibidos:', rawRooms);
+
+            // Mapeo a entidades Room
+            const mappedRooms = rawRooms.map(room => {
+                const roomEntity = Room.fromPrimitives(room);
+                console.log('REPO LOG: Entidad mapeada:', roomEntity);
+                return roomEntity;
+            });
+
+            // Verificamos si hay algún elemento nulo o indefinido después del mapeo
+            const validRooms = mappedRooms.filter(room => room !== null && room !== undefined);
+            console.log('REPO LOG: Habitaciones válidas a devolver:', validRooms);
+
+            // Retorna los objetos planos para una mejor reactividad en Vue
+            return validRooms.map(room => room.toPrimitives());
+
         } catch (error) {
-            console.error(`Error fetching rooms for hotel ${hotelId}:`, error);
-            return [];
+            // Aquí manejamos el error, y como response se inicializó, si se necesitara, estaría definido.
+            console.error(`REPO ERROR: Error fetching rooms for hotel ${hotelId}:`, error);
+            return []; // Siempre devuelve un array vacío en caso de fallo
         }
     }
-
     /**
      * Get available rooms by hotel id
      * @param {number} hotelId - Hotel identifier
