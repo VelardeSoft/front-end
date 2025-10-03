@@ -126,7 +126,6 @@ const login = async () => {
     alert('Login failed. Please try again.');
   } finally {
     loading.value = false;
-    alert('Login process completed.');
   }
 };
 </script>
