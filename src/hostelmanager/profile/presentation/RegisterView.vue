@@ -239,7 +239,13 @@ const register = async () => {
       detail: t('auth.registerError'),
       life: 3000
     });
+    // Implemnt temporal
+
     alert("Logged in successfully!");
+    setTimeout(() => {
+      router.push('/login');
+    }, 100);
+    /// Aqui llega
   } finally {
     loading.value = false;
   }

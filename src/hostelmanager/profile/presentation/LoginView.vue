@@ -123,8 +123,10 @@ const login = async () => {
       detail: t('auth.loginError'),
       life: 3000
     });
+    alert('Login failed. Please try again.');
   } finally {
     loading.value = false;
+    alert('Login process completed.');
   }
 };
 </script>
