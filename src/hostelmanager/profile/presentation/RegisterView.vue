@@ -225,8 +225,9 @@ const register = async () => {
       // Iniciar sesión automáticamente con el nuevo usuario
       await userRepository.login(userData.email, userData.password);
       alert("Logged in successfully!");
-      // Redirigir al dashboard
-      router.push('/login');
+      setTimeout(() => {
+        router.push('/login');
+      }, 100);
     } else {
       throw new Error('Failed to register user');
     }
@@ -238,6 +239,7 @@ const register = async () => {
       detail: t('auth.registerError'),
       life: 3000
     });
+    alert("Registration failed. Please try again.");
   } finally {
     loading.value = false;
   }

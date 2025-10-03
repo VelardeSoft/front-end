@@ -104,7 +104,7 @@ const login = async () => {
         detail: t('auth.loginSuccess'),
         life: 3000
       });
-
+      alert('Login successful!');
       // Redirigir al dashboard
       router.push('/dashboard');
     } else {
