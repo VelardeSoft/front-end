@@ -56,6 +56,22 @@
         "Marketing integrado"
       ],
       "id": "nrqwAYz"
+    },
+    {
+      "id": "82bc",
+      "userId": "89f2",
+      "plan": "Basic",
+      "cant_rooms": "5",
+      "duration_months": "3",
+      "startDate": "2025-10-03T14:53:45.798Z",
+      "endDate": "2026-01-03T14:53:45.798Z",
+      "status": "active",
+      "price": "99.9",
+      "features": [
+        "Hasta 5 habitaciones",
+        "3 meses de servicio",
+        "Soporte por correo electrónico"
+      ]
     }
   ],
   "users": [
@@ -101,6 +117,27 @@
       "subscription_id": null,
       "createdAt": "2025-10-02T08:36:45.500Z",
       "id": "atSnopY"
+    },
+    {
+      "id": "89f2",
+      "name": "Mamita",
+      "email": "mamita@gmail.com",
+      "password": "7654321",
+      "user_type": "Owner",
+      "phone": "987654321",
+      "address": "Molina",
+      "subscription_id": "82bc"
+    },
+    {
+      "id": "e215",
+      "name": "teresita",
+      "email": "tere@gmail.com",
+      "password": "7654321",
+      "user_type": "Visitor",
+      "phone": "987654321",
+      "address": "Los Olivos",
+      "subscription_id": null,
+      "createdAt": "2025-10-03T15:01:47.157Z"
     }
   ],
   "hotels": [
@@ -173,6 +210,24 @@
       ],
       "image": "https://media.istockphoto.com/id/119926339/es/foto/piscina-del-complejo-tur%C3%ADstico.jpg?s=612x612&w=0&k=20&c=xL-i7eF0tFmfvjZbWkOSvJTH5pzMVKWPt1iCTfZGwnw=",
       "updatedAt": "2025-10-02T08:10:16.737Z"
+    },
+    {
+      "id": "65fc",
+      "name": "Hotel X",
+      "email": "mamitis@gmail.com",
+      "address": "Molina",
+      "phone": "987654321",
+      "description": "This is a Hotel 5 estrellas ",
+      "image": "https://placehold.co/600x400?text=Hotel+Image",
+      "amenities": [
+        "Wifi",
+        "Agua Caliente",
+        "Tv"
+      ],
+      "owner_id": "89f2",
+      "subscription_id": "82bc",
+      "createdAt": "2025-10-03T14:54:38.051Z",
+      "updatedAt": "2025-10-03T14:54:38.051Z"
     }
   ],
   "rooms": [
@@ -224,6 +279,35 @@
       "amenities": [],
       "description": "",
       "image": "https://placehold.co/600x400?text=Room+Image"
+    },
+    {
+      "id": "f07d",
+      "hotel_id": "65fc",
+      "room_number": "101",
+      "typeroom": "Double",
+      "capacity": 10,
+      "price": 120,
+      "status": "Available",
+      "amenities": [
+        "Cama ancha",
+        "Agua"
+      ],
+      "description": "est una habitación para 2 personas ",
+      "image": "https://placehold.co/600x400?text=Room+Image"
+    },
+    {
+      "id": "c37b",
+      "hotel_id": "65fc",
+      "room_number": "102",
+      "typeroom": "Twin",
+      "capacity": 10,
+      "price": 33,
+      "status": "Available",
+      "description": "Es un habitación feita",
+      "image": "https://placehold.co/600x400?text=Room+Image",
+      "amenities": [
+        "Wifi"
+      ]
     }
   ],
   "reservations": [
@@ -256,6 +340,16 @@
       "total_price": 4.54,
       "created_at": "2025-10-02T09:26:47.107Z",
       "id": "Xb0-Uy-"
+    },
+    {
+      "id": "6917",
+      "room_id": "f07d",
+      "user_id": "e215",
+      "start_date": "2025-10-03",
+      "end_date": "2025-10-04",
+      "status": "Pending",
+      "total_price": 120,
+      "created_at": "2025-10-03T15:03:35.830Z"
     }
   ]
 }
