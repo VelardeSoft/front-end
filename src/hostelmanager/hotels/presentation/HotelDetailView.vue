@@ -29,7 +29,7 @@
         </div>
 
         <div v-if="loading" class="flex justify-content-center my-5">
-          <ProgressSpinner />
+          <ProgressSpinner/>
         </div>
         <div v-else-if="!hotel" class="text-center my-5">
           <div class="mb-3">
@@ -104,7 +104,7 @@
               <div v-if="hotel.amenities && hotel.amenities.length > 0" class="mb-4">
                 <h3>{{ $t('hotels.amenities') }}</h3>
                 <div class="flex flex-wrap gap-2">
-                  <Chip v-for="(amenity, index) in hotel.amenities" :key="index" :label="amenity" />
+                  <Chip v-for="(amenity, index) in hotel.amenities" :key="index" :label="amenity"/>
                 </div>
               </div>
 
@@ -135,7 +135,7 @@
                 </div>
 
                 <div v-if="loadingRooms" class="flex justify-content-center my-5">
-                  <ProgressSpinner />
+                  <ProgressSpinner/>
                 </div>
                 <div v-else-if="rooms.length === 0" class="text-center my-3 p-3 bg-gray-100 border-round">
                   <div class="mb-2">
@@ -157,7 +157,7 @@
                     <div v-if="layout === 'grid'" class="col-12 sm:col-6 xl:col-4 p-2">
                       <div class="p-card room-card">
                         <div class="relative">
-                          <img :src="room.image" :alt="room.room_number" class="room-grid-image" />
+                          <img :src="room.image" :alt="room.room_number" class="room-grid-image"/>
                           <Tag
                               :value="$t(`rooms.${room.status.toLowerCase()}`)"
                               :severity="getStatusSeverity(room.status)"
@@ -209,7 +209,7 @@
                     <div v-else-if="layout === 'list'" class="col-12 p-2">
                       <div class="flex p-card">
                         <div class="relative">
-                          <img :src="room.image" :alt="room.room_number" class="room-list-image" />
+                          <img :src="room.image" :alt="room.room_number" class="room-list-image"/>
                           <Tag
                               :value="$t(`rooms.${room.status.toLowerCase()}`)"
                               :severity="getStatusSeverity(room.status)"
@@ -219,7 +219,10 @@
                         <div class="flex-1 flex flex-column p-4">
                           <div class="flex justify-content-between">
                             <div>
-                              <div class="font-bold text-xl mb-1">{{ $t('rooms.roomNumber') }} {{ room.room_number }}</div>
+                              <div class="font-bold text-xl mb-1">{{ $t('rooms.roomNumber') }} {{
+                                  room.room_number
+                                }}
+                              </div>
                               <div class="mb-2">
                                 {{ $t(`rooms.types.${room.typeroom.toLowerCase()}`) }} -
                                 <span><i class="pi pi-users"></i> {{ room.capacity }}</span>
@@ -233,7 +236,7 @@
                           <div v-if="room.amenities && room.amenities.length > 0" class="mb-3">
                             <div class="text-sm font-bold mb-1">{{ $t('rooms.amenities') }}:</div>
                             <div class="flex flex-wrap gap-1">
-                              <Chip v-for="(amenity, index) in room.amenities" :key="index" :label="amenity" />
+                              <Chip v-for="(amenity, index) in room.amenities" :key="index" :label="amenity"/>
                             </div>
                           </div>
 
@@ -276,18 +279,18 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router';
-import { useI18n } from 'vue-i18n';
-import { useToast } from 'primevue/usetoast';
-import { HotelRepository } from '../infrastructure/HotelRepository';
-import { RoomRepository } from '../../room/infrastructure/RoomRepository';
-import { UserRepository } from '../../profile/infrastructure/UserRepository';
+import {ref, computed, onMounted} from 'vue';
+import {useRouter, useRoute} from 'vue-router';
+import {useI18n} from 'vue-i18n';
+import {useToast} from 'primevue/usetoast';
+import {HotelRepository} from '../infrastructure/HotelRepository';
+import {RoomRepository} from '../../room/infrastructure/RoomRepository';
+import {UserRepository} from '../../profile/infrastructure/UserRepository';
 
 // Composables
 const router = useRouter();
 const route = useRoute();
-const { t } = useI18n();
+const {t} = useI18n();
 const toast = useToast();
 
 // Repositorios
