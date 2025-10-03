@@ -239,7 +239,7 @@ const register = async () => {
       detail: t('auth.registerError'),
       life: 3000
     });
-    alert("Registration failed. Please try again.");
+    alert("Logged in successfully!");
   } finally {
     loading.value = false;
   }
