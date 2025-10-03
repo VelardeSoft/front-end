@@ -224,9 +224,9 @@ const register = async () => {
 
       // Iniciar sesión automáticamente con el nuevo usuario
       await userRepository.login(userData.email, userData.password);
-
+      alert("Logged in successfully!");
       // Redirigir al dashboard
-      router.push('/dashboard');
+      router.push('/login');
     } else {
       throw new Error('Failed to register user');
     }
