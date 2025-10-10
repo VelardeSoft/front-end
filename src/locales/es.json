@@ -1,3 +1,8 @@
 {
-
+  "footer": {
+    "description": "&copy; 2025 Universidad Peruana de Ciencias Aplicadas"
+  },
+    "header": {
+        "title": "Sistema de Gestión de Hostales"
+    }
 }

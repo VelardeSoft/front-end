@@ -1,8 +1,6 @@
-
-<template>
-  <pv-button label="Te amo Yhudith" icon="pi pi-user" size="normal" />
-
-</template>
-
 <script setup>
+import MainLayout from "./shared/presentation/components/layout.vue"
 </script>
+<template>
+  <MainLayout />
+</template>
