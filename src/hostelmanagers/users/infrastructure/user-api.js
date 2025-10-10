@@ -32,7 +32,7 @@ export class UsersApi extends BaseApi {
      * Fetches all categories.
      * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the categories' response.
      */
-    getCategories() {
+    getUsers() {
         return this.#usersEndpoint.getAll();
     }
 
@@ -50,7 +50,7 @@ export class UsersApi extends BaseApi {
      * @param {Object} resource - The category data to create.
      * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the created category response.
      */
-    createCategory(resource) {
+    createUsers(resource) {
         return this.#usersEndpoint.create(resource);
     }
 
