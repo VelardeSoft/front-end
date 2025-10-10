@@ -1,0 +1,111 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Maria Lopez",
+      "email": "maria.lopez@example.com",
+      "password": "hashed_password_1",
+      "type_user": "admin",
+      "subscriptions_id": 1
+    },
+    {
+      "id": 2,
+      "name": "Pedro Gomez",
+      "email": "pedro.gomez@example.com",
+      "password": "hashed_password_2",
+      "type_user": "owner",
+      "subscriptions_id": 2
+    },
+    {
+      "id": 3,
+      "name": "Juan Perez",
+      "email": "juan.perez@example.com",
+      "password": "hashed_password_3",
+      "type_user": "visitor",
+      "subscriptions_id": 3
+    }
+  ],
+  "subscriptions": [
+    {
+      "id": 1,
+      "type_plan": "gold",
+      "number_card": "4111-2222-3333-4444",
+      "date": "12/28",
+      "cvv": "123"
+    },
+    {
+      "id": 2,
+      "type_plan": "silver",
+      "number_card": "4555-6666-7777-8888",
+      "date": "05/29",
+      "cvv": "456"
+    },
+    {
+      "id": 3,
+      "type_plan": "bronze",
+      "number_card": "4999-0000-1111-2222",
+      "date": "01/27",
+      "cvv": "789"
+    }
+  ],
+  "hotels": [
+    {
+      "id": 1,
+      "name": "Hotel del Sol",
+      "imagen": "hotel_sol.jpg",
+      "address": "Av. Principal 123",
+      "phone": "987654321",
+      "users_id": 2
+    },
+    {
+      "id": 2,
+      "name": "Plaza Real",
+      "imagen": "plaza_real.jpg",
+      "address": "Calle Falsa 456",
+      "phone": "912345678",
+      "users_id": 2
+    }
+  ],
+  "rooms": [
+    {
+      "id": 1,
+      "price": 150.00,
+      "type_room": "R1",
+      "hotels_id": 1
+    },
+    {
+      "id": 2,
+      "price": 250.00,
+      "type_room": "R2",
+      "hotels_id": 1
+    },
+    {
+      "id": 3,
+      "price": 180.00,
+      "type_room": "R1",
+      "hotels_id": 2
+    },
+    {
+      "id": 4,
+      "price": 300.00,
+      "type_room": "R2",
+      "hotels_id": 2
+    }
+  ],
+  "reservations": [
+    {
+      "id": 1,
+      "start_date": "2025-10-15T14:00:00Z",
+      "end_date": "2025-10-20T12:00:00Z",
+      "users_id": 3,
+      "rooms_id": 2
+    },
+    {
+      "id": 2,
+      "start_date": "2025-11-01T14:00:00Z",
+      "end_date": "2025-11-05T12:00:00Z",
+      "users_id": 3,
+      "rooms_id": 4
+    }
+  ]
+}

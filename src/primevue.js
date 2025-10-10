@@ -4,6 +4,7 @@ import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 
 import Button from 'primevue/button';
+import SelectButton from 'primevue/selectbutton';
 
 export default (app) => {
     app.use(PrimeVue, {
@@ -13,4 +14,5 @@ export default (app) => {
     })
 
     app.component('pv-button', Button);
+    app.component('pv-select-button', SelectButton);
 }
