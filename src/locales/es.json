@@ -4,5 +4,8 @@
   },
     "header": {
         "title": "Sistema de Gestión de Hostales"
+    },
+    "siderbar": {
+        "profile": "Perfil"
     }
 }

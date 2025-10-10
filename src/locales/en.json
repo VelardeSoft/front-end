@@ -4,5 +4,8 @@
   },
   "header": {
     "title": "Hostel Management System"
+  },
+  "siderbar": {
+    "profile": "Profile"
   }
 }
