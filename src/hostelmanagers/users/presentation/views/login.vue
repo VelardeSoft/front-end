@@ -16,6 +16,11 @@ const handleLogin = async () => {
     error.value = "Email o contraseña incorrectos";
   }
 };
+
+const goToRegister = () => {
+  router.push({ name: "register" });
+};
+
 </script>
 
 <template>
@@ -32,7 +37,15 @@ const handleLogin = async () => {
         <pv-input-text id="password" v-model="form.password" type="password" required />
         <label for="password">Password</label>
       </pv-float-label> <br />
-      <pv-button type="submit" label="Login" />
+
+      <pv-button type="submit" label="Login" /> <br />
+      <pv-button
+          class="ml-2"
+          label="Register"
+          severity="secondary"
+          @click="goToRegister"
+      />
+
     </form>
     <div v-if="error" class="text-red-600 mt-2">{{ error }}</div>
   </div>

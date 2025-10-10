@@ -12,7 +12,6 @@ const useUsersStore = defineStore('users', () => {
     const errors = ref([]);
     const loading = ref(false);
 
-    // Fetch all users (admin only or para pruebas)
     const fetchUsers = async () => {
         loading.value = true;
         try {
@@ -25,7 +24,6 @@ const useUsersStore = defineStore('users', () => {
         }
     };
 
-    // Login: solo match email + password (sin hash real)
     const login = async ({ email, password }) => {
         loading.value = true;
         try {
@@ -47,16 +45,33 @@ const useUsersStore = defineStore('users', () => {
         }
     };
 
-    // Register: agrega el usuario y lo loguea
     const register = async (userData) => {
         loading.value = true;
         try {
+            console.log("Registrando usuario:", userData); // Debug
+
+            // Aseguramos que type_user sea string y subscriptions_id sea null por defecto
+            if (!userData.type_user) {
+                userData.type_user = 'client';
+            }
+
+            // Crear objeto User para enviar al API
             const user = new User(userData);
+            console.log("Usuario a crear:", user); // Debug
+
+            // Llamar al API para crear el usuario
             const response = await usersApi.createUsers(user);
-            const created = UsersAssembler.toEntityFromResource(response.data);
-            currentUser.value = created;
-            return true;
+            console.log("Respuesta del servidor:", response); // Debug
+
+            // Si hay respuesta correcta, guardar el usuario actual
+            if (response && response.data) {
+                currentUser.value = UsersAssembler.toEntityFromResource(response.data);
+                return true;
+            } else {
+                throw new Error("No se recibió respuesta del servidor");
+            }
         } catch (err) {
+            console.error("Error al registrar usuario:", err); // Debug
             errors.value.push(err);
             return false;
         } finally {
@@ -69,7 +84,6 @@ const useUsersStore = defineStore('users', () => {
         currentUser.value = null;
     };
 
-    // Perfil
     const isLoggedIn = computed(() => !!currentUser.value);
 
     return {

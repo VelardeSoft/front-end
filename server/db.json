@@ -3,26 +3,35 @@
     {
       "id": 1,
       "name": "Maria Lopez",
-      "email": "maria.lopez@example.com",
-      "password": "hashed_password_1",
+      "email": "maria@gmail.com",
+      "password": "maria123",
       "type_user": "admin",
       "subscriptions_id": 1
     },
     {
       "id": 2,
       "name": "Pedro Gomez",
-      "email": "pedro.gomez@example.com",
-      "password": "hashed_password_2",
+      "email": "pedro@gmail.com",
+      "password": "pedro123",
       "type_user": "owner",
       "subscriptions_id": 2
     },
     {
       "id": 3,
       "name": "Juan Perez",
-      "email": "juan.perez@example.com",
-      "password": "hashed_password_3",
+      "email": "juan@gmail.com",
+      "password": "juan123",
       "type_user": "visitor",
       "subscriptions_id": 3
+    },
+    {
+      "id": 4,
+      "name": "nestor",
+      "email": "nestor@gmail.com",
+      "password": "123456",
+      "type_user": "owner",
+      "subscriptions_id": null,
+      "subscription": null
     }
   ],
   "subscriptions": [
@@ -69,25 +78,25 @@
   "rooms": [
     {
       "id": 1,
-      "price": 150.00,
+      "price": 150,
       "type_room": "R1",
       "hotels_id": 1
     },
     {
       "id": 2,
-      "price": 250.00,
+      "price": 250,
       "type_room": "R2",
       "hotels_id": 1
     },
     {
       "id": 3,
-      "price": 180.00,
+      "price": 180,
       "type_room": "R1",
       "hotels_id": 2
     },
     {
       "id": 4,
-      "price": 300.00,
+      "price": 300,
       "type_room": "R2",
       "hotels_id": 2
     }

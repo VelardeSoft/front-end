@@ -7,6 +7,7 @@ import Button from 'primevue/button';
 import SelectButton from 'primevue/selectbutton';
 import FloatLabel from 'primevue/floatlabel';
 import InputText from 'primevue/inputtext';
+import MultiSelect from 'primevue/multiselect';
 
 export default (app) => {
     app.use(PrimeVue, {
@@ -19,4 +20,5 @@ export default (app) => {
     app.component('pv-select-button', SelectButton);
     app.component('pv-float-label', FloatLabel);
     app.component('pv-input-text', InputText);
+    app.component('pv-multi-select', MultiSelect);
 }

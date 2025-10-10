@@ -46,9 +46,9 @@ export class UsersApi extends BaseApi {
     }
 
     /**
-     * Creates a new category.
-     * @param {Object} resource - The category data to create.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the created category response.
+     * Creates a new user.
+     * @param {Object} resource - The user data to create.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the created user response.
      */
     createUsers(resource) {
         return this.#usersEndpoint.create(resource);
