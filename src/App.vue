@@ -1,7 +1,6 @@
 <script setup>
-//import MainLayout from "./shared/presentation/components/layout.vue"
-//import Login from "./hostelmanagers/users/presentation/views/login.vue"
+import MainLayout from "./shared/presentation/components/layout.vue"
 </script>
 <template>
-  <router-view />
+  <MainLayout />
 </template>

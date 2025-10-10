@@ -37,21 +37,21 @@
   "subscriptions": [
     {
       "id": 1,
-      "type_plan": "gold",
+      "type_plan": "mensual",
       "number_card": "4111-2222-3333-4444",
       "date": "12/28",
       "cvv": "123"
     },
     {
       "id": 2,
-      "type_plan": "silver",
+      "type_plan": "semestral",
       "number_card": "4555-6666-7777-8888",
       "date": "05/29",
       "cvv": "456"
     },
     {
       "id": 3,
-      "type_plan": "bronze",
+      "type_plan": "anual",
       "number_card": "4999-0000-1111-2222",
       "date": "01/27",
       "cvv": "789"
@@ -79,25 +79,25 @@
     {
       "id": 1,
       "price": 150,
-      "type_room": "R1",
+      "type_room": "indivudual",
       "hotels_id": 1
     },
     {
       "id": 2,
       "price": 250,
-      "type_room": "R2",
+      "type_room": "doble",
       "hotels_id": 1
     },
     {
       "id": 3,
       "price": 180,
-      "type_room": "R1",
+      "type_room": "doble",
       "hotels_id": 2
     },
     {
       "id": 4,
       "price": 300,
-      "type_room": "R2",
+      "type_room": "doble",
       "hotels_id": 2
     }
   ],
