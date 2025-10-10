@@ -8,7 +8,7 @@ const router = useRouter();
 
 const typeUserOptions = [
   { label: 'Owner', value: 'owner' },
-  { label: 'Client', value: 'client' }
+  { label: 'Visitor', value: 'visitor' }
 ];
 
 const form = ref({
@@ -16,7 +16,7 @@ const form = ref({
   email: '',
   password: '',
   type_user: '',
-  subscriptions_id: null  // Cambiado de subscription_id a subscriptions_id
+  subscriptions_id: null
 });
 const error = ref('');
 
@@ -77,8 +77,6 @@ const goToLogin = () => {
           severity="secondary"
           @click="goToLogin"
       />
-
-
 
     </form>
     <div v-if="error" class="text-red-600 mt-2">{{ error }}</div>

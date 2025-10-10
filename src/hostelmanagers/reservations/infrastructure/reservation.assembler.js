@@ -1,6 +1,6 @@
 import {Reservation} from "../domain/model/reservation.entity.js";
 
-export class ReservationsAssembler {
+export class ReservationAssembler {
     static toEntityFromResource(resource) {
         return new Reservation({...resource})
     }

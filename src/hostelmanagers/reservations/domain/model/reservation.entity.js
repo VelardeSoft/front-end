@@ -1,5 +1,5 @@
 import {User} from "../../../users/domain/model/user.entity.js";
-import {Rooms} from "../../../rooms/domain/model/room.entity.js";
+import {Room} from "../../../rooms/domain/model/room.entity.js";
 
 export class Reservation {
     constructor({ id = null, start_date = '', end_date = '',
@@ -10,6 +10,6 @@ export class Reservation {
         this.users_id = users_id;
         this.rooms_id = rooms_id;
         this.users = users instanceof User ? users : null;
-        this.rooms = rooms instanceof Rooms ? rooms : null;
+        this.rooms = rooms instanceof Room ? rooms : null;
     }
 }

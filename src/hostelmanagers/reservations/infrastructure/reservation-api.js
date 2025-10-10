@@ -1,17 +1,12 @@
 import {BaseApi} from "../../../shared/infrastructure/base-api.js";
 import {BaseEndpoint} from "../../../shared/infrastructure/base-endpoint.js";
 
-const reservationsEndpointPath    = import.meta.env.VITE_RESERVATIONS_ENDPOINT_PATH;
+const reservationsEndpointPath = import.meta.env.VITE_RESERVATIONS_ENDPOINT_PATH;
 
 /**
- * PublishingApi class to handle API operations for Publishing context.
- * Extends BaseApi and provides CRUD operations for categories and tutorials.
- *
+ * ReservationApi class to handle API operations for Reservations context.
  * @class
  * @extends BaseApi
- * @example
- * const publishingApi = new PublishingApi();
- * publishingApi.getCategories().then(response => console.log(response.data));
  */
 export class ReservationApi extends BaseApi {
     /**
@@ -21,7 +16,7 @@ export class ReservationApi extends BaseApi {
     #reservationsEndpoint;
 
     /**
-     * Initializes endpoints for categories and tutorials.
+     * Initializes endpoints for reservations.
      */
     constructor() {
         super();
@@ -29,46 +24,46 @@ export class ReservationApi extends BaseApi {
     }
 
     /**
-     * Fetches all categories.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the categories' response.
+     * Fetches all reservations.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the reservations' response.
      */
-    getCategories() {
+    getReservations() {
         return this.#reservationsEndpoint.getAll();
     }
 
     /**
-     * Fetches a category by its ID.
-     * @param {number|string} id - The ID of the category.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the category response.
+     * Fetches a reservation by its ID.
+     * @param {number|string} id - The ID of the reservation.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the reservation response.
      */
-    getCategoryById(id) {
+    getReservationById(id) {
         return this.#reservationsEndpoint.getById(id);
     }
 
     /**
-     * Creates a new category.
-     * @param {Object} resource - The category data to create.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the created category response.
+     * Creates a new reservation.
+     * @param {Object} resource - The reservation data to create.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the created reservation response.
      */
-    createCategory(resource) {
+    createReservation(resource) {
         return this.#reservationsEndpoint.create(resource);
     }
 
     /**
-     * Updates an existing category.
-     * @param {Object} resource - The category data to update (must include id).
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the updated category response.
+     * Updates an existing reservation.
+     * @param {Object} resource - The reservation data to update (must include id).
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the updated reservation response.
      */
-    updateCategory(resource) {
+    updateReservation(resource) {
         return this.#reservationsEndpoint.update(resource.id, resource);
     }
 
     /**
-     * Deletes a category by its ID.
-     * @param {number|string} id - The ID of the category to delete.
+     * Deletes a reservation by its ID.
+     * @param {number|string} id - The ID of the reservation to delete.
      * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the delete response.
      */
-    deleteCategory(id) {
+    deleteReservation(id) {
         return this.#reservationsEndpoint.delete(id);
     }
 }

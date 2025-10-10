@@ -1,17 +1,12 @@
 import {BaseApi} from "../../../shared/infrastructure/base-api.js";
 import {BaseEndpoint} from "../../../shared/infrastructure/base-endpoint.js";
 
-const roomsEndpointPath    = import.meta.env.VITE_ROOMS_ENDPOINT_PATH;
+const roomsEndpointPath = import.meta.env.VITE_ROOMS_ENDPOINT_PATH;
 
 /**
- * PublishingApi class to handle API operations for Publishing context.
- * Extends BaseApi and provides CRUD operations for categories and tutorials.
- *
+ * RoomApi class to handle API operations for Rooms context.
  * @class
  * @extends BaseApi
- * @example
- * const publishingApi = new PublishingApi();
- * publishingApi.getCategories().then(response => console.log(response.data));
  */
 export class RoomApi extends BaseApi {
     /**
@@ -21,7 +16,7 @@ export class RoomApi extends BaseApi {
     #roomsEndpoint;
 
     /**
-     * Initializes endpoints for categories and tutorials.
+     * Initializes endpoints for rooms.
      */
     constructor() {
         super();
@@ -29,46 +24,46 @@ export class RoomApi extends BaseApi {
     }
 
     /**
-     * Fetches all categories.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the categories' response.
+     * Fetches all rooms.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the rooms' response.
      */
-    getCategories() {
+    getRooms() {
         return this.#roomsEndpoint.getAll();
     }
 
     /**
-     * Fetches a category by its ID.
-     * @param {number|string} id - The ID of the category.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the category response.
+     * Fetches a room by its ID.
+     * @param {number|string} id - The ID of the room.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the room response.
      */
-    getCategoryById(id) {
+    getRoomById(id) {
         return this.#roomsEndpoint.getById(id);
     }
 
     /**
-     * Creates a new category.
-     * @param {Object} resource - The category data to create.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the created category response.
+     * Creates a new room.
+     * @param {Object} resource - The room data to create.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the created room response.
      */
-    createCategory(resource) {
+    createRoom(resource) {
         return this.#roomsEndpoint.create(resource);
     }
 
     /**
-     * Updates an existing category.
-     * @param {Object} resource - The category data to update (must include id).
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the updated category response.
+     * Updates an existing room.
+     * @param {Object} resource - The room data to update (must include id).
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the updated room response.
      */
-    updateCategory(resource) {
+    updateRoom(resource) {
         return this.#roomsEndpoint.update(resource.id, resource);
     }
 
     /**
-     * Deletes a category by its ID.
-     * @param {number|string} id - The ID of the category to delete.
+     * Deletes a room by its ID.
+     * @param {number|string} id - The ID of the room to delete.
      * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the delete response.
      */
-    deleteCategory(id) {
+    deleteRoom(id) {
         return this.#roomsEndpoint.delete(id);
     }
 }

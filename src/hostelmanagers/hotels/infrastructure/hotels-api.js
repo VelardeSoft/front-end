@@ -1,17 +1,12 @@
 import {BaseApi} from "../../../shared/infrastructure/base-api.js";
 import {BaseEndpoint} from "../../../shared/infrastructure/base-endpoint.js";
 
-const hotelsEndpointPath    = import.meta.env.VITE_HOTELS_ENDPOINT_PATH;
+const hotelsEndpointPath = import.meta.env.VITE_HOTELS_ENDPOINT_PATH;
 
 /**
- * PublishingApi class to handle API operations for Publishing context.
- * Extends BaseApi and provides CRUD operations for categories and tutorials.
- *
+ * HotelsApi class to handle API operations for Hotels context.
  * @class
  * @extends BaseApi
- * @example
- * const publishingApi = new PublishingApi();
- * publishingApi.getCategories().then(response => console.log(response.data));
  */
 export class HotelsApi extends BaseApi {
     /**
@@ -21,7 +16,7 @@ export class HotelsApi extends BaseApi {
     #hotelsEndpoint;
 
     /**
-     * Initializes endpoints for categories and tutorials.
+     * Initializes endpoints for hotels.
      */
     constructor() {
         super();
@@ -29,46 +24,46 @@ export class HotelsApi extends BaseApi {
     }
 
     /**
-     * Fetches all categories.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the categories' response.
+     * Fetches all hotels.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the hotels' response.
      */
-    getCategories() {
+    getHotels() {
         return this.#hotelsEndpoint.getAll();
     }
 
     /**
-     * Fetches a category by its ID.
-     * @param {number|string} id - The ID of the category.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the category response.
+     * Fetches a hotel by its ID.
+     * @param {number|string} id - The ID of the hotel.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the hotel response.
      */
-    getCategoryById(id) {
+    getHotelById(id) {
         return this.#hotelsEndpoint.getById(id);
     }
 
     /**
-     * Creates a new category.
-     * @param {Object} resource - The category data to create.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the created category response.
+     * Creates a new hotel.
+     * @param {Object} resource - The hotel data to create.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the created hotel response.
      */
-    createCategory(resource) {
+    createHotel(resource) {
         return this.#hotelsEndpoint.create(resource);
     }
 
     /**
-     * Updates an existing category.
-     * @param {Object} resource - The category data to update (must include id).
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the updated category response.
+     * Updates an existing hotel.
+     * @param {Object} resource - The hotel data to update (must include id).
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the updated hotel response.
      */
-    updateCategory(resource) {
+    updateHotel(resource) {
         return this.#hotelsEndpoint.update(resource.id, resource);
     }
 
     /**
-     * Deletes a category by its ID.
-     * @param {number|string} id - The ID of the category to delete.
+     * Deletes a hotel by its ID.
+     * @param {number|string} id - The ID of the hotel to delete.
      * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the delete response.
      */
-    deleteCategory(id) {
+    deleteHotel(id) {
         return this.#hotelsEndpoint.delete(id);
     }
 }

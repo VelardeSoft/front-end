@@ -5,7 +5,7 @@
       "name": "Maria Lopez",
       "email": "maria@gmail.com",
       "password": "maria123",
-      "type_user": "admin",
+      "type_user": "owner",
       "subscriptions_id": 1
     },
     {
@@ -30,6 +30,15 @@
       "email": "nestor@gmail.com",
       "password": "123456",
       "type_user": "owner",
+      "subscriptions_id": null,
+      "subscription": null
+    },
+    {
+      "id": 5,
+      "name": "nestor",
+      "email": "velarde@gmail.com",
+      "password": "1234",
+      "type_user": "visitor",
       "subscriptions_id": null,
       "subscription": null
     }
@@ -61,7 +70,7 @@
     {
       "id": 1,
       "name": "Hotel del Sol",
-      "imagen": "hotel_sol.jpg",
+      "imagen": "https://n9.cl/5eo8h",
       "address": "Av. Principal 123",
       "phone": "987654321",
       "users_id": 2
@@ -69,18 +78,28 @@
     {
       "id": 2,
       "name": "Plaza Real",
-      "imagen": "plaza_real.jpg",
+      "imagen": "https://n9.cl/5eo8h",
       "address": "Calle Falsa 456",
       "phone": "912345678",
       "users_id": 2
+    },
+    {
+      "id": 3,
+      "name": "Hotel",
+      "imagen": "https://n9.cl/5eo8h",
+      "address": "Los Olvos",
+      "phone": "987654321",
+      "users_id": 2,
+      "users": null
     }
   ],
   "rooms": [
     {
       "id": 1,
-      "price": 150,
-      "type_room": "indivudual",
-      "hotels_id": 1
+      "price": 153,
+      "type_room": "individual",
+      "hotels_id": 1,
+      "hotels": null
     },
     {
       "id": 2,
@@ -99,6 +118,20 @@
       "price": 300,
       "type_room": "doble",
       "hotels_id": 2
+    },
+    {
+      "id": 5,
+      "price": 123,
+      "type_room": "doble",
+      "hotels_id": 2,
+      "hotels": null
+    },
+    {
+      "id": 6,
+      "price": 12,
+      "type_room": "individual",
+      "hotels_id": 3,
+      "hotels": null
     }
   ],
   "reservations": [

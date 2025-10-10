@@ -1,17 +1,12 @@
 import {BaseApi} from "../../../shared/infrastructure/base-api.js";
 import {BaseEndpoint} from "../../../shared/infrastructure/base-endpoint.js";
 
-const subscriptionsEndpointPath    = import.meta.env.VITE_SUBSCRIPTIONS_ENDPOINT_PATH;
+const subscriptionsEndpointPath = import.meta.env.VITE_SUBSCRIPTIONS_ENDPOINT_PATH;
 
 /**
- * PublishingApi class to handle API operations for Publishing context.
- * Extends BaseApi and provides CRUD operations for categories and tutorials.
- *
+ * SubscriptionsApi class to handle API operations for Subscriptions context.
  * @class
  * @extends BaseApi
- * @example
- * const publishingApi = new PublishingApi();
- * publishingApi.getCategories().then(response => console.log(response.data));
  */
 export class SubscriptionsApi extends BaseApi {
     /**
@@ -21,7 +16,7 @@ export class SubscriptionsApi extends BaseApi {
     #subscriptionsEndpoint;
 
     /**
-     * Initializes endpoints for categories and tutorials.
+     * Initializes endpoints for subscriptions.
      */
     constructor() {
         super();
@@ -29,46 +24,46 @@ export class SubscriptionsApi extends BaseApi {
     }
 
     /**
-     * Fetches all categories.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the categories' response.
+     * Fetches all subscriptions.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the subscriptions' response.
      */
-    getCategories() {
+    getSubscriptions() {
         return this.#subscriptionsEndpoint.getAll();
     }
 
     /**
-     * Fetches a category by its ID.
-     * @param {number|string} id - The ID of the category.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the category response.
+     * Fetches a subscription by its ID.
+     * @param {number|string} id - The ID of the subscription.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the subscription response.
      */
-    getCategoryById(id) {
+    getSubscriptionById(id) {
         return this.#subscriptionsEndpoint.getById(id);
     }
 
     /**
-     * Creates a new category.
-     * @param {Object} resource - The category data to create.
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the created category response.
+     * Creates a new subscription.
+     * @param {Object} resource - The subscription data to create.
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the created subscription response.
      */
-    createCategory(resource) {
+    createSubscription(resource) {
         return this.#subscriptionsEndpoint.create(resource);
     }
 
     /**
-     * Updates an existing category.
-     * @param {Object} resource - The category data to update (must include id).
-     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the updated category response.
+     * Updates an existing subscription.
+     * @param {Object} resource - The subscription data to update (must include id).
+     * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the updated subscription response.
      */
-    updateCategory(resource) {
+    updateSubscription(resource) {
         return this.#subscriptionsEndpoint.update(resource.id, resource);
     }
 
     /**
-     * Deletes a category by its ID.
-     * @param {number|string} id - The ID of the category to delete.
+     * Deletes a subscription by its ID.
+     * @param {number|string} id - The ID of the subscription to delete.
      * @returns {Promise<import('axios').AxiosResponse>} Promise resolving to the delete response.
      */
-    deleteCategory(id) {
+    deleteSubscription(id) {
         return this.#subscriptionsEndpoint.delete(id);
     }
 }

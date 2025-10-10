@@ -1,6 +1,7 @@
 <script setup>
-import MainLayout from "./shared/presentation/components/layout.vue"
+// No necesitamos importar MainLayout aquí porque ya se usa en el router
 </script>
+
 <template>
-  <MainLayout />
+  <RouterView />
 </template>

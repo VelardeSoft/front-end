@@ -2,15 +2,20 @@
 import TheHeader from './header-content.vue'
 import TheFooter from './footer-content.vue'
 import TheSidebar from './siderbar-content.vue'
+import { computed } from 'vue'
+import useUserStore from '../../../hostelmanagers/users/application/user.store.js';
+
+const userStore = useUserStore();
+const isAuthenticated = computed(() => !!userStore.currentUser);
 </script>
 
 <template>
   <div class="layout">
     <the-header />
     <div class="main-content">
-      <the-sidebar />
+      <the-sidebar v-if="isAuthenticated" />
       <main class="content">
-        <router-view></router-view>
+        <router-view />
       </main>
     </div>
     <the-footer />
@@ -21,7 +26,6 @@ import TheSidebar from './siderbar-content.vue'
 .layout {
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
 .main-content {

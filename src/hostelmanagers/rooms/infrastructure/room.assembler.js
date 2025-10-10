@@ -1,6 +1,6 @@
-import {Room} from "../domain/model/room.entity.js";
+import { Room } from "../domain/model/room.entity.js";
 
-export class RoomsAssembler {
+export class RoomAssembler {
     static toEntityFromResource(resource) {
         return new Room({...resource})
     }

@@ -1,6 +1,6 @@
 import {Hotel} from "../../../hotels/domain/model/hotel.entity.js";
 
-export class Rooms {
+export class Room {
     constructor({ id = null, price = 0, type_room = '',
                 hotels_id = null, hotels = null }){
         this.id = id;
