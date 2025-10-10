@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const platformApi = import.meta.env.VITE_LEARNING_PLATFORM_API_URL;
+const platformApi = import.meta.env.VITE_SYSTEM_PLATFORM_API_URL;
 
 /**
  * Base API class to handle HTTP requests using Axios
