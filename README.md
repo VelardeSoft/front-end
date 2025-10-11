@@ -1,6 +1,6 @@
 ## Herramientas usadas para el desarrollo
 
-[![Mis Skills](https://skillicons.dev/icons?i=vue,primevue,primeflex,axios,json-server,primeicons,i18n,pinia,vercel,github,githubpages,mysql,trello,canva)](https://skillicons.dev)
+[![Mis Skills](https://skillicons.dev/icons?i=vue,primevue,pinia,vercel,github,mysql)](https://skillicons.dev)
 
 # Aplicaciones Web - Front-end
 
