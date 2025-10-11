@@ -1,38 +1,44 @@
-# instalacion de dependencias 
+## Herramientas usadas para el desarrollo
 
-"@primeuix/themes": "^1.2.3",
-"axios": "^1.12.2",
-"pinia": "^3.0.3",
-"primeflex": "^4.0.0",
-"primeicons": "^7.0.0",
-"primevue": "^4.3.9",
-"vue": "^3.5.21",
-"vue-i18n": "^11.1.12",
-"vue-router": "^4.5.1"
+[![Vue](https://skillicons.dev/icons?i=vue)](https://vuejs.org)  
+[![PrimeVue](https://skillicons.dev/icons?i=primevue)](https://primevue.org)  
+[![PrimeFlex](https://skillicons.dev/icons?i=primeflex)](https://www.primefaces.org/primeflex/)  
+[![axios](https://skillicons.dev/icons?i=axios)](https://axios-http.com)  
+[![json-server](https://skillicons.dev/icons?i=json-server)](https://github.com/typicode/json-server)  
+[![primeicons](https://skillicons.dev/icons?i=primeicons)](https://www.primefaces.org/primeicons/)  
+[![i18n](https://skillicons.dev/icons?i=i18n)](https://kazupon.github.io/vue-i18n/)  
+[![pinia](https://skillicons.dev/icons?i=pinia)](https://pinia.vuejs.org)
 
 ---
-npm install axios
-npm install pinia
-npm install primeflex
-npm install primeicons
-npm install vue-i18n@11
-npm install vue-router@4
-npm i json-server@0.17.4
-primevue 
+
+## Herramientas para deployment (Despliegue)
+
+[![vercel](https://skillicons.dev/icons?i=vercel)](https://vercel.com)  
+[![github](https://skillicons.dev/icons?i=github)](https://github.com)  
+[![githubpages](https://skillicons.dev/icons?i=githubpages)](https://pages.github.com)
+
 ---
-Developemn
+
+## Herramientas de desarrollo adicionales
+
+[![mysql](https://skillicons.dev/icons?i=mysql)](https://www.mysql.com)  
+[![trello](https://skillicons.dev/icons?i=trello)](https://trello.com)  
+[![canva](https://skillicons.dev/icons?i=canva)](https://www.canva.com)
 
 
+# Aplicaciones Web - Front-end
 
-_redirects
+## Base de datos
 
-/* /index.html 200  
+<img width="1034" height="700" alt="Image" src="https://github.com/user-attachments/assets/42f28bcf-ed84-4fb5-b300-d1268d3231f5" />
 
+## Deploment
 
+<img width="1046" height="563" alt="Image" src="https://github.com/user-attachments/assets/e50de46c-1ce4-4cab-9ee5-892e0f658c7b" /> 
 
+## Deploment successfully
 
-
-
+<img width="754" height="871" alt="Image" src="https://github.com/user-attachments/assets/64e134c7-4e99-4dc6-bd30-fa6b2d4fb753" />
 
 
 
