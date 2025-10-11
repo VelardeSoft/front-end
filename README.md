@@ -1,6 +1,6 @@
 ## Herramientas usadas para el desarrollo
 
-[![Mis Skills](https://skillicons.dev/icons?i=vue,primevue,pinia,vercel,github,mysql)](https://skillicons.dev)
+[![Mis Skills](https://skillicons.dev/icons?i=vue,pinia,vercel,github,mysql)](https://skillicons.dev)
 
 # Aplicaciones Web - Front-end
 
@@ -16,8 +16,21 @@
 
 <img width="754" height="871" alt="Image" src="https://github.com/user-attachments/assets/64e134c7-4e99-4dc6-bd30-fa6b2d4fb753" />
 
+## Deploment
 
+Json-Server : https://hostelmanager-ten.vercel.app/ 
 
+Web : https://front-end-gamma-nine-11.vercel.app/ 
+
+## Buenas practicas 
+
+<img width="691" height="163" alt="Image" src="https://github.com/user-attachments/assets/6a293fd0-ba99-4b0d-a93b-8751f51193b4" />
+
+## Local Storage
+
+<img width="643" height="173" alt="Image" src="https://github.com/user-attachments/assets/a23bca34-26e5-41e2-b2de-a04eeaf58946" />
+
+# GRACIAS 
 
 
 
