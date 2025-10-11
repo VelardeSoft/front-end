@@ -1,30 +1,6 @@
 ## Herramientas usadas para el desarrollo
 
-[![Vue](https://skillicons.dev/icons?i=vue)](https://vuejs.org)  
-[![PrimeVue](https://skillicons.dev/icons?i=primevue)](https://primevue.org)  
-[![PrimeFlex](https://skillicons.dev/icons?i=primeflex)](https://www.primefaces.org/primeflex/)  
-[![axios](https://skillicons.dev/icons?i=axios)](https://axios-http.com)  
-[![json-server](https://skillicons.dev/icons?i=json-server)](https://github.com/typicode/json-server)  
-[![primeicons](https://skillicons.dev/icons?i=primeicons)](https://www.primefaces.org/primeicons/)  
-[![i18n](https://skillicons.dev/icons?i=i18n)](https://kazupon.github.io/vue-i18n/)  
-[![pinia](https://skillicons.dev/icons?i=pinia)](https://pinia.vuejs.org)
-
----
-
-## Herramientas para deployment (Despliegue)
-
-[![vercel](https://skillicons.dev/icons?i=vercel)](https://vercel.com)  
-[![github](https://skillicons.dev/icons?i=github)](https://github.com)  
-[![githubpages](https://skillicons.dev/icons?i=githubpages)](https://pages.github.com)
-
----
-
-## Herramientas de desarrollo adicionales
-
-[![mysql](https://skillicons.dev/icons?i=mysql)](https://www.mysql.com)  
-[![trello](https://skillicons.dev/icons?i=trello)](https://trello.com)  
-[![canva](https://skillicons.dev/icons?i=canva)](https://www.canva.com)
-
+[![Mis Skills](https://skillicons.dev/icons?i=vue,primevue,primeflex,axios,json-server,primeicons,i18n,pinia,vercel,github,githubpages,mysql,trello,canva)](https://skillicons.dev)
 
 # Aplicaciones Web - Front-end
 
