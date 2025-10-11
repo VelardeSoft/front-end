@@ -4,6 +4,10 @@
 
 # Aplicaciones Web - Front-end
 
+## Context Diagram 
+
+<img width="1085" height="573" alt="Image" src="https://github.com/user-attachments/assets/19d550f4-3ad2-47fb-afbb-6e4a9631477c" />
+
 ## Base de datos
 
 <img width="1034" height="700" alt="Image" src="https://github.com/user-attachments/assets/42f28bcf-ed84-4fb5-b300-d1268d3231f5" />
