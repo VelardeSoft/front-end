@@ -40,45 +40,58 @@ const goToLogin = () => {
 </script>
 
 <template>
-  <div class="p-4 max-w-md mx-auto">
-    <h1>Registro</h1>
-    <form @submit.prevent="handleRegister">
+  <div class="centered-container">
+    <div class="p-4 max-w-md mx-auto">
+      <h1>Registro</h1>
+      <form @submit.prevent="handleRegister">
 
-      <pv-float-label variant="on">
-        <pv-input-text id="name" v-model="form.name" type="text" required />
-        <label for="name">Name</label>
-      </pv-float-label> <br />
+        <pv-float-label variant="on">
+          <pv-input-text id="name" v-model="form.name" type="text" required />
+          <label for="name">Name</label>
+        </pv-float-label> <br />
 
-      <pv-float-label variant="on">
-        <pv-input-text id="email" v-model="form.email" type="email" required />
-        <label for="email">Email</label>
-      </pv-float-label> <br />
+        <pv-float-label variant="on">
+          <pv-input-text id="email" v-model="form.email" type="email" required />
+          <label for="email">Email</label>
+        </pv-float-label> <br />
 
-      <pv-float-label variant="on">
-        <pv-input-text id="password" v-model="form.password" type="password" required />
-        <label for="password">Password</label>
-      </pv-float-label> <br />
+        <pv-float-label variant="on">
+          <pv-input-text id="password" v-model="form.password" type="password" required />
+          <label for="password">Password</label>
+        </pv-float-label> <br />
 
-      <label for="type_user" class="block mb-2">Type User</label>
-      <pv-select-button
-          id="type_user"
-          v-model="form.type_user"
-          :options="typeUserOptions"
-          optionLabel="label"
-          optionValue="value"
-          aria-label="Tipo de usuario"
-          required
-      /> <br/> <br />
+        <label for="type_user" class="block mb-2">Type User</label>
+        <pv-select-button
+            id="type_user"
+            v-model="form.type_user"
+            :options="typeUserOptions"
+            optionLabel="label"
+            optionValue="value"
+            severity="info"
+            aria-label="Tipo de usuario"
+            required
+        /> <br/> <br />
 
-      <pv-button type="submit" label="Register" /> <br /> <br />
-      <pv-button
-          class="ml-2"
-          label="Login"
-          severity="secondary"
-          @click="goToLogin"
-      />
+        <pv-button type="submit" label="Register" />
+        <pv-button
+            class="ml-2"
+            label="Login"
+            severity="help"
+            @click="goToLogin"
+        />
 
-    </form>
-    <div v-if="error" class="text-red-600 mt-2">{{ error }}</div>
+      </form>
+      <div v-if="error" class="text-red-600 mt-2">{{ error }}</div>
+    </div>
   </div>
 </template>
+
+<style scoped>
+.centered-container {
+  min-height: 80vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #f7f7f7;
+}
+</style>

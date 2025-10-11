@@ -70,7 +70,7 @@
     {
       "id": 1,
       "name": "Hotel del Sol",
-      "imagen": "https://n9.cl/5eo8h",
+      "imagen": "https://n9.cl/2jhste",
       "address": "Av. Principal 123",
       "phone": "987654321",
       "users_id": 2
@@ -78,7 +78,7 @@
     {
       "id": 2,
       "name": "Plaza Real",
-      "imagen": "https://n9.cl/5eo8h",
+      "imagen": "https://n9.cl/2jhste",
       "address": "Calle Falsa 456",
       "phone": "912345678",
       "users_id": 2
@@ -86,7 +86,7 @@
     {
       "id": 3,
       "name": "Hotel",
-      "imagen": "https://n9.cl/5eo8h",
+      "imagen": "https://n9.cl/2jhste",
       "address": "Los Olvos",
       "phone": "987654321",
       "users_id": 2,

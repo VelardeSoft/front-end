@@ -1,41 +1,25 @@
 import {createRouter, createWebHistory} from "vue-router";
-
-// Layout principal
 import MainLayout from "./shared/presentation/components/layout.vue";
-
-// Vistas de autenticación
 import Login from "./hostelmanagers/users/presentation/views/login.vue";
 import Register from "./hostelmanagers/users/presentation/views/register.vue";
 import Profile from "./hostelmanagers/users/presentation/views/profile.vue";
-
-// Hoteles
 import HotelList from "./hostelmanagers/hotels/presentation/views/hotel-list.vue";
 import HotelForm from "./hostelmanagers/hotels/presentation/views/hotel-form.vue";
 import HotelDetails from "./hostelmanagers/hotels/presentation/views/hotel-details.vue";
-
-// Habitaciones
 import RoomList from "./hostelmanagers/rooms/presentation/views/room-list.vue";
 import RoomForm from "./hostelmanagers/rooms/presentation/views/room-form.vue";
-
-// Reservaciones
 import ReservationList from "./hostelmanagers/reservations/presentation/views/reservation-list.vue";
 import ReservationForm from "./hostelmanagers/reservations/presentation/views/reservation-form.vue";
 import ReservationDetail from "./hostelmanagers/reservations/presentation/views/reservation-detail.vue";
-
-// Suscripciones
 import SubscriptionList from "./hostelmanagers/subscriptions/presentation/views/subscription-list.vue";
 import SubscriptionForm from "./hostelmanagers/subscriptions/presentation/views/subscription-form.vue";
-
-// Vistas compartidas
 import PageNotFound from "./shared/presentation/views/page-not-found.vue";
 
 const routes = [
-    // Todas las rutas bajo un solo layout
     {
         path: "/",
         component: MainLayout,
         children: [
-            // Rutas de autenticación
             {
                 path: "",
                 name: "home",
@@ -54,16 +38,12 @@ const routes = [
                 component: Register,
                 meta: {title: "Register", public: true}
             },
-
-            // Perfil de usuario
             {
                 path: "profile",
                 name: "profile",
                 component: Profile,
                 meta: {title: "Perfil"}
             },
-
-            // Rutas de Hoteles
             {
                 path: "hotels",
                 name: "hotel-list",
@@ -88,8 +68,6 @@ const routes = [
                 component: HotelForm,
                 meta: {title: "Editar Hotel", requiresOwner: true}
             },
-
-            // Rutas de Habitaciones
             {
                 path: "rooms",
                 name: "room-list",
@@ -108,8 +86,6 @@ const routes = [
                 component: RoomForm,
                 meta: {title: "Editar Habitación", requiresOwner: true}
             },
-
-            // Rutas de Reservaciones
             {
                 path: "reservations",
                 name: "reservation-list",
@@ -128,8 +104,6 @@ const routes = [
                 component: ReservationDetail,
                 meta: {title: "Detalles de Reservación"}
             },
-
-            // Rutas de Suscripciones
             {
                 path: "subscriptions",
                 name: "subscription-list",
@@ -150,8 +124,6 @@ const routes = [
             }
         ]
     },
-
-    // Ruta 404
     {
         path: "/:pathMatch(.*)*",
         name: "not-found",
@@ -177,7 +149,6 @@ router.beforeEach((to, from, next) => {
     
     // Verificar si la ruta es pública
     if (to.meta.public) {
-        // Si el usuario ya está autenticado y va a una página pública, redirigir al dashboard
         if (isAuthenticated && (to.name === 'login' || to.name === 'register' || to.name === 'home')) {
             next({ name: 'hotel-list' });
             return;
