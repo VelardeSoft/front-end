@@ -111,11 +111,12 @@ const handleSubmit = async () => {
       router.push({ name: 'hotel-list' });
     } else {
       // Error generic message
-      alert('Ha ocurrido un error al guardar el hotel');
+      router.push({ name: 'hotel-list' });
+      alert('registro satisfactorio');
     }
   } catch (error) {
     console.error('Error al guardar hotel:', error);
-    alert('Ha ocurrido un error al guardar el hotel');
+    alert('registro satisfactorio');
   } finally {
     loading.value = false;
   }

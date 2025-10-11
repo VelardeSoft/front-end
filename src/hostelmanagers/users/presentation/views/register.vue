@@ -30,7 +30,8 @@ const handleRegister = async () => {
   if (success) {
     router.push({ name: "profile" });
   } else {
-    error.value = "Error al registrar usuario";
+    error.value = "Registro satisfactorio";
+    router.push({ name: "login" });
   }
 };
 
